@@ -6,7 +6,7 @@ namespace BibliotecaDeClases.Models
     {
         public int Id_Cazador { get; set; }
         public int Id_Nen { get; set; }
-        public CazadorModel Cazador { get; set; } = new CazadorModel();
-        public NenModel Nen { get; set; } = new NenModel();
+        public CazadorModel Cazador { get; set; }
+        public NenModel Nen { get; set; }
     }
 }

@@ -1,6 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using WebApi_CodeFirst.Connections;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<WebApiDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("RutaSQL"));
+});
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

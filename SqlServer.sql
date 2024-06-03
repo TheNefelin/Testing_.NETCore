@@ -29,6 +29,7 @@ CREATE TABLE CazadorNen (
 )
 GO
 
+DROP TABLE __EFMigrationsHistory
 DROP TABLE CazadorNen
 DROP TABLE Nen
 DROP TABLE Cazadores
@@ -76,6 +77,17 @@ GO
 
 -- Stored Procedure ---------------------------------------------
 -- --------------------------------------------------------------
+SELECT * FROM Cazadores
+SELECT * FROM Nen
+SELECT * FROM CazadorNen
+
+SELECT
+	a.Nombre,
+	c.Nombre AS Nen,
+	c.Descripcion
+FROM Cazadores a
+	INNER JOIN CazadorNen b ON a.Id = b.Id_Cazador
+	INNER JOIN Nen c ON b.Id_Nen = c.Id
 
 -- Query --------------------------------------------------------
 -- --------------------------------------------------------------
