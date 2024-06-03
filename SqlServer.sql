@@ -62,20 +62,211 @@ VALUES
 SET IDENTITY_INSERT Nen OFF
 GO
 
-SET IDENTITY_INSERT CazadorNen ON
-GO
 INSERT INTO CazadorNen
-	(Id, Nombre, Edad)
+	(Id_Cazador, Id_Nen)
 VALUES
 	(1, 1),
 	(2, 2),
 	(3, 3),
 	(3, 6),
 	(4, 4)
-SET IDENTITY_INSERT CazadorNen OFF
-GO
 
 -- Stored Procedure ---------------------------------------------
+-- --------------------------------------------------------------
+CREATE PROCEDURE Cazadores_GetAll 
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	SELECT
+		Id,
+		Nombre,
+		Edad
+	FROM Cazadores
+END
+GO
+
+CREATE PROCEDURE Cazadores_GetById
+	@Id AS INT
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	SELECT
+		Id,
+		Nombre,
+		Edad
+	FROM Cazadores
+	WHERE
+		Id = @Id
+END
+GO
+
+CREATE PROCEDURE Cazadores_Insert
+	@Nombre AS VARCHAR(50),
+	@Edad AS INT
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	INSERT INTO Cazadores
+		(Nombre, Edad)
+	VALUES
+		(@Nombre, @Edad)
+
+	SELECT SCOPE_IDENTITY() AS Id
+END
+GO
+
+CREATE PROCEDURE Cazadores_Update
+	@Id AS INT,
+	@Nombre AS VARCHAR(50),
+	@Edad AS INT
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	UPDATE Cazadores SET
+		Nombre = @Nombre, 
+		Edad = @Edad
+	WHERE
+		Id = @Id
+END
+GO
+
+CREATE PROCEDURE Cazadores_Delete
+	@Id AS INT
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	DELETE FROM Cazadores WHERE Id = @Id
+END
+GO
+
+CREATE PROCEDURE Nen_GetAll 
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	SELECT
+		Id,
+		Nombre,
+		Descripcion
+	FROM Nen
+END
+GO
+
+CREATE PROCEDURE Nen_GetById
+	@Id AS INT
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	SELECT
+		Id,
+		Nombre,
+		Descripcion
+	FROM Nen
+	WHERE
+		Id = @Id
+END
+GO
+
+CREATE PROCEDURE Nen_Insert
+	@Nombre AS VARCHAR(50),
+	@Descripcion AS VARCHAR(256)
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	INSERT INTO Nen
+		(Nombre, Descripcion)
+	VALUES
+		(@Nombre, @Descripcion)
+
+	SELECT SCOPE_IDENTITY() AS Id
+END
+GO
+
+CREATE PROCEDURE Nen_Update
+	@Id AS INT,
+	@Nombre AS VARCHAR(50),
+	@Descripcion AS VARCHAR(256)
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	UPDATE Nen SET
+		Nombre = @Nombre, 
+		Descripcion = @Descripcion
+	WHERE
+		Id = @Id
+END
+GO
+
+CREATE PROCEDURE Nen_Delete
+	@Id AS INT
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	DELETE FROM Nen WHERE Id = @Id
+END
+GO
+
+CREATE PROCEDURE CazadorNen_GetAll 
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	SELECT
+		Id_Cazador,
+		Id_Nen
+	FROM CazadorNen
+END
+GO
+
+CREATE PROCEDURE CazadorNen_Insert
+	@Id_Cazador AS INT,
+	@Id_Nen AS INT
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	INSERT INTO CazadorNen
+		(Id_Cazador, Id_Nen)
+	VALUES
+		(@Id_Cazador, @Id_Nen)
+END
+GO
+
+CREATE PROCEDURE CazadorNen_Delete
+	@Id_Cazador AS INT,
+	@Id_Nen AS INT
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	DELETE FROM CazadorNen WHERE Id_Cazador = @Id_Cazador AND Id_Nen = @Id_Nen
+END
+GO
+
+DROP PROCEDURE Cazadores_GetAll
+DROP PROCEDURE Cazadores_GetById
+DROP PROCEDURE Cazadores_Insert
+DROP PROCEDURE Cazadores_Update
+DROP PROCEDURE Cazadores_Delete
+DROP PROCEDURE Nen_GetAll
+DROP PROCEDURE Nen_GetById
+DROP PROCEDURE Nen_Insert
+DROP PROCEDURE Nen_Update
+DROP PROCEDURE Nen_Delete
+DROP PROCEDURE CazadorNen_GetAll
+DROP PROCEDURE CazadorNen_Insert
+DROP PROCEDURE CazadorNen_Delete
+
+-- Query --------------------------------------------------------
 -- --------------------------------------------------------------
 SELECT * FROM Cazadores
 SELECT * FROM Nen
@@ -88,9 +279,6 @@ SELECT
 FROM Cazadores a
 	INNER JOIN CazadorNen b ON a.Id = b.Id_Cazador
 	INNER JOIN Nen c ON b.Id_Nen = c.Id
-
--- Query --------------------------------------------------------
--- --------------------------------------------------------------
 
 -- --------------------------------------------------------------
 -- --------------------------------------------------------------

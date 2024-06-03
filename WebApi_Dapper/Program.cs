@@ -1,13 +1,15 @@
-using Microsoft.EntityFrameworkCore;
-using WebApi_CodeFirst.Connections;
+using Microsoft.Data.SqlClient;
+using System.Data;
+using WebApi_Dapper.Connections;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<WebApiDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("RutaSQL"));
-});
+builder.Services.AddTransient<IDbConnection>(options =>
+    new SqlConnection(builder.Configuration.GetConnectionString("RutaSQL"))
+);
+
+builder.Services.AddTransient<DapperDbContext>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

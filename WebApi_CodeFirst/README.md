@@ -18,7 +18,7 @@ Swashbuckle.AspNetCore
 ```
 
 ### Create DBContext Class for EntityFramework
-* Add tables/entities/models in this class
+* Add Entity/Model/Class in this class
 * Add SeedData if requere
 
 > For single DBContext class

@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQLServer", "SQLServer", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi_CodeFirst", "WebApi_CodeFirst\WebApi_CodeFirst.csproj", "{93F409DD-E6C5-41B5-91FD-72A7BC3F174E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi_DataBaseFirst", "WebApi_DataBaseFirst\WebApi_DataBaseFirst.csproj", "{731073EC-B16F-4F78-962E-873B482FE36E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi_Dapper", "WebApi_Dapper\WebApi_Dapper.csproj", "{CF202B26-60D9-4E7A-A98C-151EFD0B2AC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +30,14 @@ Global
 		{93F409DD-E6C5-41B5-91FD-72A7BC3F174E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93F409DD-E6C5-41B5-91FD-72A7BC3F174E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93F409DD-E6C5-41B5-91FD-72A7BC3F174E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{731073EC-B16F-4F78-962E-873B482FE36E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{731073EC-B16F-4F78-962E-873B482FE36E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{731073EC-B16F-4F78-962E-873B482FE36E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{731073EC-B16F-4F78-962E-873B482FE36E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF202B26-60D9-4E7A-A98C-151EFD0B2AC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF202B26-60D9-4E7A-A98C-151EFD0B2AC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF202B26-60D9-4E7A-A98C-151EFD0B2AC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF202B26-60D9-4E7A-A98C-151EFD0B2AC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
