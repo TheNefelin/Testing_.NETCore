@@ -29,8 +29,8 @@ namespace WebApi_CodeFirst.Connections
 
             modelBuilder.Entity<CazadorNenModel>(t => {
                 t.HasKey(c => new { c.Id_Cazador, c.Id_Nen });
-                t.HasOne(c => c.Cazador).WithMany(c => c.Cazador_Nen).HasForeignKey(c => c.Id_Cazador).OnDelete(DeleteBehavior.Restrict); ;
-                t.HasOne(c => c.Nen).WithMany(c => c.Cazador_Nen).HasForeignKey(c => c.Id_Nen).OnDelete(DeleteBehavior.Restrict); ;
+                t.HasOne(c => c.Cazador).WithMany(c => c.Cazador_Nen).HasForeignKey(c => c.Id_Cazador).OnDelete(DeleteBehavior.Restrict);
+                t.HasOne(c => c.Nen).WithMany(c => c.Cazador_Nen).HasForeignKey(c => c.Id_Nen).OnDelete(DeleteBehavior.Restrict);
             });
 
             SeedData(modelBuilder);

@@ -364,3 +364,4 @@ FodyWeavers.xsd
 /WebApi_CodeFirst/appsettings.Development.json
 /WebApi_DataBaseFirst/appsettings.Development.json
 /WebApi_Dapper/appsettings.Development.json
+/WebApi_EF_orm/appsettings.Development.json

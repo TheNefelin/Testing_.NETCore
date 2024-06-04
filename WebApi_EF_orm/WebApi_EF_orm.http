@@ -1,0 +1,6 @@
+@WebApi_EF_orm_HostAddress = http://localhost:5222
+
+GET {{WebApi_EF_orm_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

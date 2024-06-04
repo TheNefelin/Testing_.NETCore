@@ -1,11 +1,8 @@
-﻿# Code First
-
-> The DB is generated from the code
+﻿# Entity Framework ORM
 
 ### Dependencies
 ```
 Microsoft.EntityFrameworkCore.SqlServer
-Microsoft.EntityFrameworkCore.Tools
 Swashbuckle.AspNetCore
 ```
 
@@ -36,14 +33,10 @@ public class WebApiDbContext : DbContext
 }
 ```
 
-### Emigrate Entities to Database (Package Manager Console)
-* If single DBContext class for connection
+### Add Dependency Injection in Program.cs
 ```
-Add-Migration Inicial
-Update-DataBase
-```
-* If multiple DBContext class for connection
-```
-Add-Migration -Context WebApiDbContext Inicial
-Update-DataBase -Context WebApiDbContext
+builder.Services.AddDbContext<WebApiDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("RutaSQL"));
+});
 ```
