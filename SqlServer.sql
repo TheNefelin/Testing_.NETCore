@@ -109,12 +109,23 @@ AS
 BEGIN
 	SET NOCOUNT ON
 
-	INSERT INTO Cazadores
-		(Nombre, Edad)
-	VALUES
-		(@Nombre, @Edad)
+	BEGIN TRANSACTION
 
-	SELECT SCOPE_IDENTITY() AS Id
+	BEGIN TRY
+		INSERT INTO Cazadores
+			(Nombre, Edad)
+		VALUES
+			(@Nombre, @Edad)		
+				
+		COMMIT TRANSACTION
+
+		SELECT 201 AS StatusCode, 'Datos Guardados Correctamente' AS Msge, SCOPE_IDENTITY() AS Id
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+
+		SELECT ERROR_STATE() AS StatusCode, ERROR_MESSAGE() AS Msge, 0 AS Id
+	END CATCH
 END
 GO
 
