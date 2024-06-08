@@ -11,6 +11,8 @@ builder.Services.AddTransient<IDbConnection>(options =>
 );
 
 builder.Services.AddTransient<IBaseService<CazadorDTO_Get, CazadorDTO_PostPut>, CazadorService>();
+builder.Services.AddTransient<IBaseService<NenDTO_Get, NenDTO_PostPut>, NenService>();
+builder.Services.AddTransient<IBaseService<CazadorNenDTO>, CazadorNenService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -137,11 +137,24 @@ AS
 BEGIN
 	SET NOCOUNT ON
 
-	UPDATE Cazadores SET
-		Nombre = @Nombre, 
-		Edad = @Edad
-	WHERE
-		Id = @Id
+	BEGIN TRANSACTION
+
+	BEGIN TRY
+		UPDATE Cazadores SET
+			Nombre = @Nombre, 
+			Edad = @Edad
+		WHERE
+			Id = @Id
+
+		COMMIT TRANSACTION
+
+		SELECT 202 AS StatusCode, 'Datos Modificados Correctamente' AS Msge, @Id AS Id
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+
+		SELECT ERROR_STATE() AS StatusCode, ERROR_MESSAGE() AS Msge, 0 AS Id
+	END CATCH
 END
 GO
 
@@ -151,7 +164,32 @@ AS
 BEGIN
 	SET NOCOUNT ON
 
-	DELETE FROM Cazadores WHERE Id = @Id
+    IF EXISTS (SELECT Id_Cazador FROM CazadorNen WHERE Id_Cazador = @Id)
+		BEGIN
+			SELECT 400 AS StatusCode, 'Existe Dependencia Con CazadorNen' AS Msge, 0 AS Id
+			RETURN
+		END
+
+    IF NOT EXISTS (SELECT Id FROM Cazadores WHERE Id = @Id)
+		BEGIN
+			SELECT 404 AS StatusCode, 0 AS Id, 'El Id No Existe' AS Msge 
+			RETURN
+		END
+
+	BEGIN TRANSACTION
+
+	BEGIN TRY
+		DELETE FROM Cazadores WHERE Id = @Id
+
+		COMMIT TRANSACTION
+
+		SELECT 202 AS StatusCode, 'Datos Eliminados Correctamente' AS Msge, 0 AS Id
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+
+		SELECT ERROR_STATE() AS StatusCode, ERROR_MESSAGE() AS Msge, 0 AS Id
+	END CATCH
 END
 GO
 
@@ -191,12 +229,23 @@ AS
 BEGIN
 	SET NOCOUNT ON
 
-	INSERT INTO Nen
-		(Nombre, Descripcion)
-	VALUES
-		(@Nombre, @Descripcion)
+	BEGIN TRANSACTION
 
-	SELECT SCOPE_IDENTITY() AS Id
+	BEGIN TRY
+		INSERT INTO Nen
+			(Nombre, Descripcion)
+		VALUES
+			(@Nombre, @Descripcion)
+
+		COMMIT TRANSACTION
+
+		SELECT 201 AS StatusCode, 'Datos Guardados Correctamente' AS Msge, SCOPE_IDENTITY() AS Id
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+
+		SELECT ERROR_STATE() AS StatusCode, ERROR_MESSAGE() AS Msge, 0 AS Id
+	END CATCH
 END
 GO
 
@@ -208,11 +257,24 @@ AS
 BEGIN
 	SET NOCOUNT ON
 
-	UPDATE Nen SET
-		Nombre = @Nombre, 
-		Descripcion = @Descripcion
-	WHERE
-		Id = @Id
+	BEGIN TRANSACTION
+
+	BEGIN TRY
+		UPDATE Nen SET
+			Nombre = @Nombre, 
+			Descripcion = @Descripcion
+		WHERE
+			Id = @Id
+
+		COMMIT TRANSACTION
+
+		SELECT 202 AS StatusCode, 'Datos Modificados Correctamente' AS Msge, @Id AS Id
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+
+		SELECT ERROR_STATE() AS StatusCode, ERROR_MESSAGE() AS Msge, 0 AS Id
+	END CATCH
 END
 GO
 
@@ -222,7 +284,33 @@ AS
 BEGIN
 	SET NOCOUNT ON
 
-	DELETE FROM Nen WHERE Id = @Id
+
+    IF EXISTS (SELECT Id_Nen FROM CazadorNen WHERE Id_Nen = @Id)
+		BEGIN
+			SELECT 400 AS StatusCode, 'Existe Dependencia Con CazadorNen' AS Msge, 0 AS Id
+			RETURN
+		END
+
+    IF NOT EXISTS (SELECT Id FROM Nen WHERE Id = @Id)
+		BEGIN
+			SELECT 404 AS StatusCode, 0 AS Id, 'El Id No Existe' AS Msge 
+			RETURN
+		END
+
+	BEGIN TRANSACTION
+
+	BEGIN TRY
+		DELETE FROM Nen WHERE Id = @Id
+
+		COMMIT TRANSACTION
+
+		SELECT 202 AS StatusCode, 'Datos Eliminados Correctamente' AS Msge, 0 AS Id
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+
+		SELECT ERROR_STATE() AS StatusCode, ERROR_MESSAGE() AS Msge, 0 AS Id
+	END CATCH
 END
 GO
 
@@ -245,10 +333,41 @@ AS
 BEGIN
 	SET NOCOUNT ON
 
-	INSERT INTO CazadorNen
-		(Id_Cazador, Id_Nen)
-	VALUES
-		(@Id_Cazador, @Id_Nen)
+    IF NOT EXISTS (SELECT Id FROM Cazadores WHERE Id = @Id_Cazador)
+		BEGIN
+			SELECT 404 AS StatusCode, 'El Id_Cazador No Existe' AS Msge, 0 AS Id
+			RETURN
+		END
+
+    IF NOT EXISTS (SELECT Id FROM Nen WHERE Id = @Id_Nen)
+		BEGIN
+			SELECT 404 AS StatusCode, 'El Id_Nen No Existe' AS Msge, 0 AS Id
+			RETURN
+		END
+
+	IF EXISTS (SELECT Id_Cazador FROM CazadorNen WHERE Id_Cazador = @Id_Cazador AND Id_Nen = @Id_Nen)
+		BEGIN
+			SELECT 400 AS StatusCode, 'El Elemento ya Existe' AS Msge, 0 AS Id
+			RETURN
+		END
+
+	BEGIN TRANSACTION
+
+	BEGIN TRY
+		INSERT INTO CazadorNen
+			(Id_Cazador, Id_Nen)
+		VALUES
+			(@Id_Cazador, @Id_Nen)
+
+		COMMIT TRANSACTION
+
+		SELECT 201 AS StatusCode, 'Datos Guardado Correctamente' AS Msge, 0 AS Id
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+
+		SELECT ERROR_STATE() AS StatusCode, ERROR_MESSAGE() AS Msge, 0 AS Id
+	END CATCH
 END
 GO
 
@@ -259,7 +378,26 @@ AS
 BEGIN
 	SET NOCOUNT ON
 
-	DELETE FROM CazadorNen WHERE Id_Cazador = @Id_Cazador AND Id_Nen = @Id_Nen
+    IF NOT EXISTS (SELECT Id_Cazador FROM CazadorNen WHERE Id_Cazador = @Id_Cazador AND Id_Nen = @Id_Nen)
+		BEGIN
+			SELECT 404 AS StatusCode, 'El Elemento No Existe' AS Msge, 0 AS Id
+			RETURN
+		END
+
+	BEGIN TRANSACTION
+
+	BEGIN TRY
+		DELETE FROM CazadorNen WHERE Id_Cazador = @Id_Cazador AND Id_Nen = @Id_Nen
+	
+		COMMIT TRANSACTION
+
+		SELECT 202 AS StatusCode, 'Datos Eliminados Correctamente' AS Msge, 0 AS Id
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+
+		SELECT ERROR_STATE() AS StatusCode, ERROR_MESSAGE() AS Msge, 0 AS Id
+	END CATCH
 END
 GO
 

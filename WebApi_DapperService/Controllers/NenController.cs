@@ -7,35 +7,35 @@ namespace WebApi_DapperService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CazadorController : ControllerBase
+    public class NenController : ControllerBase
     {
-        private readonly IBaseService<CazadorDTO_Get, CazadorDTO_PostPut> _service;
+        private readonly IBaseService<NenDTO_Get, NenDTO_PostPut> _service;
 
-        public CazadorController(IBaseService<CazadorDTO_Get, CazadorDTO_PostPut> service)
+        public NenController(IBaseService<NenDTO_Get, NenDTO_PostPut> service)
         {
             _service = service;
         }
 
         [HttpGet]
-        public async Task<IApiActionResult<IEnumerable<CazadorDTO_Get>>> GetAll(CancellationToken cancellationToken)
+        public async Task<IApiActionResult<IEnumerable<NenDTO_Get>>> GetAll(CancellationToken cancellationToken)
         {
             return await _service.GetAll(cancellationToken);
         }
 
         [HttpGet("{id}")]
-        public async Task<IApiActionResult<CazadorDTO_Get>> GetById(int id, CancellationToken cancellationToken)
+        public async Task<IApiActionResult<NenDTO_Get>> GetById(int id, CancellationToken cancellationToken)
         {
             return await _service.GetById(id, cancellationToken);
         }
 
         [HttpPost]
-        public async Task<IApiActionResult<CazadorDTO_Get>> Insert(CazadorDTO_PostPut dto, CancellationToken cancellationToken)
+        public async Task<IApiActionResult<NenDTO_Get>> Insert(NenDTO_PostPut dto, CancellationToken cancellationToken)
         {
             return await _service.Insert(dto, cancellationToken);
         }
 
         [HttpPut("{id}")]
-        public async Task<IApiActionResult<CazadorDTO_Get>> Update(int id, CazadorDTO_PostPut dto, CancellationToken cancellationToken)
+        public async Task<IApiActionResult<NenDTO_Get>> Update(int id, NenDTO_PostPut dto, CancellationToken cancellationToken)
         {
             return await _service.Update(id, dto, cancellationToken);
         }
