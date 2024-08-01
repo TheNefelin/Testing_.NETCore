@@ -1,7 +1,6 @@
 ﻿using BibliotecaDeClases.DTOs;
 using Dapper;
 using System.Data;
-using System.Data.Common;
 using WebApi_DapperService.Classes;
 
 namespace WebApi_DapperService.Services

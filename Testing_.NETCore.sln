@@ -18,7 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi_Dapper", "WebApi_Dap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi_EF_orm", "WebApi_EF_orm\WebApi_EF_orm.csproj", "{2C9B6194-4F8A-4444-BC8E-18B4A11D0338}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi_DapperService", "WebApi_DapperService\WebApi_DapperService.csproj", "{24E2D65A-AD16-4FC9-B73D-3AEA793EC056}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi_DapperService", "WebApi_DapperService\WebApi_DapperService.csproj", "{24E2D65A-AD16-4FC9-B73D-3AEA793EC056}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi_AuthJWT", "WebApi_AuthJWT\WebApi_AuthJWT.csproj", "{30098A3B-0DFD-43DE-A007-501F8F0734F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{24E2D65A-AD16-4FC9-B73D-3AEA793EC056}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24E2D65A-AD16-4FC9-B73D-3AEA793EC056}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24E2D65A-AD16-4FC9-B73D-3AEA793EC056}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30098A3B-0DFD-43DE-A007-501F8F0734F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30098A3B-0DFD-43DE-A007-501F8F0734F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30098A3B-0DFD-43DE-A007-501F8F0734F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30098A3B-0DFD-43DE-A007-501F8F0734F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

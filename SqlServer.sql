@@ -1,8 +1,27 @@
-﻿CREATE DATABASE bd_HxH
+﻿-- Lista los usuario del SQL
+SELECT 
+	NAME AS LoginName, 
+	TYPE_DESC AS AccountType, 
+	create_date, 
+	modify_date,
+	TYPE
+FROM sys.server_principals
+WHERE TYPE IN ('S', 'U', 'G');
 GO
-
-USE bd_HxH
+-- Crea un nuevo usuario para login
+CREATE LOGIN testing WITH PASSWORD = 'testing';
 GO
+-- Crea nueva Base de Datos
+CREATE DATABASE db_testing
+GO
+-- Te posiciona en la Base de Datos
+USE db_testing
+GO
+-- Crea el usuario para la Base de Datos
+CREATE USER testing FOR LOGIN testing;
+GO
+-- Asigna el rol de Owner del usuario a la Base de Datos
+EXECUTE sp_addrolemember 'db_owner', 'testing';
 
 -- Tablas -------------------------------------------------------
 -- --------------------------------------------------------------
@@ -29,10 +48,31 @@ CREATE TABLE CazadorNen (
 )
 GO
 
+CREATE TABLE Perfiles (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	Nombre VARCHAR(50) NOT NULL,
+	UNIQUE(Nombre),
+)
+GO
+
+CREATE TABLE Usuarios (
+	Id VARCHAR(256) PRIMARY KEY,
+	Email VARCHAR(100) NOT NULL,
+	AuthHash VARBINARY(64) NOT NULL,
+	AuthSalt VARBINARY(16) NOT NULL,
+	SessionCode VARCHAR(256) ,
+	Id_Perfil INT NOT NULL
+	UNIQUE(Email),
+	FOREIGN KEY (Id_Perfil) REFERENCES Perfiles(Id)
+)
+GO
+
 DROP TABLE __EFMigrationsHistory
 DROP TABLE CazadorNen
 DROP TABLE Nen
 DROP TABLE Cazadores
+DROP TABLE Perfiles
+DROP TABLE Usuarios
 
 -- Data ---------------------------------------------------------
 -- --------------------------------------------------------------
@@ -70,6 +110,16 @@ VALUES
 	(3, 3),
 	(3, 6),
 	(4, 4)
+
+SET IDENTITY_INSERT Perfiles ON
+GO
+INSERT INTO Perfiles
+	(Id, Nombre)
+VALUES
+	(1, 'Admin'),
+	(2, 'Usuario')
+SET IDENTITY_INSERT Perfiles OFF
+GO
 
 -- Stored Procedure ---------------------------------------------
 -- --------------------------------------------------------------
@@ -401,6 +451,98 @@ BEGIN
 END
 GO
 
+ALTER PROCEDURE Auth_Register
+	@Id VARCHAR(256),
+	@Email VARCHAR(100),
+    @Clave VARCHAR(100),
+	@ClaveConfirmar VARCHAR(100)
+AS
+BEGIN
+	SET NOCOUNT ON
+	
+	IF @Clave <> @ClaveConfirmar
+		BEGIN
+			SELECT 400 AS StatusCode, 'Las Contraseñas NO Coinciden' AS StatusMessage
+			RETURN
+		END
+
+	IF EXISTS (SELECT Id FROM Usuarios WHERE Email = @Email)
+		BEGIN
+			SELECT 400 AS StatusCode, 'El Usuario ya Existe' AS StatusMessage
+			RETURN
+		END
+
+    DECLARE @Salt VARBINARY(16)
+    SET @Salt = CRYPT_GEN_RANDOM(16)
+
+    DECLARE @Hash VARBINARY(64)
+    SET @Hash = HASHBYTES('SHA2_256', @Clave + CAST(@Salt AS NVARCHAR(32)))
+
+	BEGIN TRY
+		BEGIN TRANSACTION
+
+		INSERT INTO Usuarios 
+			(Id, Email, AuthHash, AuthSalt, Id_Perfil)
+		VALUES 
+			(@Id, @Email, @hash, @salt, 2)
+			
+		COMMIT TRANSACTION
+
+		SELECT 201 AS StatusCode, 'Usuario Registrado Correctamente' AS StatusMessage
+    END TRY
+    BEGIN CATCH
+		ROLLBACK TRANSACTION
+
+		SELECT 500 AS StatusCode, 'Error al Guardado los Datos (Auth_Register)' AS StatusMessage 
+    END CATCH
+END
+GO
+
+ALTER PROCEDURE Auth_Login
+    @Email NVARCHAR(100),
+    @Clave NVARCHAR(100)
+AS
+BEGIN
+	SET NOCOUNT ON
+
+    DECLARE @Hash VARBINARY(64)
+    DECLARE @Salt VARBINARY(16)
+    DECLARE @HashProvidedPassword VARBINARY(64)
+
+    SELECT 
+		@Hash = AuthHash, @Salt = AuthSalt
+    FROM Usuarios 
+	WHERE 
+		Email = @Email
+
+    SET @hashProvidedPassword = HASHBYTES('SHA2_256', @Clave + CAST(@Salt AS NVARCHAR(32)))
+
+    IF @Hash <> @hashProvidedPassword OR @Hash IS NULL OR @hashProvidedPassword IS NULL
+		BEGIN
+			SELECT 400 AS StatusCode, 'Usuario o Contraseña Incorrecta' AS StatusMessage
+			RETURN
+		END
+
+	BEGIN TRY
+		BEGIN TRANSACTION
+
+		UPDATE Usuarios SET
+			SessionCode = NEWID()
+		WHERE 
+			Email = @Email
+		
+		COMMIT TRANSACTION
+
+		SELECT 201 AS StatusCode, 'Inicio de Sesión Exitoso.' AS StatusMessage
+    END TRY
+    BEGIN CATCH
+		ROLLBACK TRANSACTION
+
+		SELECT 500 AS StatusCode, 'Error al Iniciar Sesion (Auth_Login)' AS StatusMessage 
+    END CATCH
+END
+GO
+
 DROP PROCEDURE Cazadores_GetAll
 DROP PROCEDURE Cazadores_GetById
 DROP PROCEDURE Cazadores_Insert
@@ -414,6 +556,8 @@ DROP PROCEDURE Nen_Delete
 DROP PROCEDURE CazadorNen_GetAll
 DROP PROCEDURE CazadorNen_Insert
 DROP PROCEDURE CazadorNen_Delete
+DROP PROCEDURE Auth_Register
+DROP PROCEDURE Auth_Login
 
 -- Query --------------------------------------------------------
 -- --------------------------------------------------------------
@@ -428,6 +572,15 @@ SELECT
 FROM Cazadores a
 	INNER JOIN CazadorNen b ON a.Id = b.Id_Cazador
 	INNER JOIN Nen c ON b.Id_Nen = c.Id
+
+SELECT * FROM Perfiles
+SELECT * FROM Usuarios
+
+EXECUTE Auth_Register 'ABCD123', 'user@example.com', 'string', 'string' 
+EXECUTE Auth_Login 'user@example.com', 'string' 
+
+TRUNCATE TABLE Usuarios
+SELECT NEWID()
 
 -- --------------------------------------------------------------
 -- --------------------------------------------------------------
