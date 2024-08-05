@@ -67,3 +67,10 @@ Add-Migration Inicial
 // inicia la migracion creando las tablas de Identity en la base de datos
 update-database
 ```
+
+### Agregar autenticacion a los endpoints con bearer
+```
+[ApiController]
+[Route("[controller]")]
+[Authorize]
+```
