@@ -1,6 +1,7 @@
 # Testing_.NETCore
 
 > Project List
+* [Console App for Testing](https://github.com/TheNefelin/Testing_.NETCore/tree/master/ConsoleAppTesting)
 * [Biblioteca De Clases](https://github.com/TheNefelin/Testing_.NETCore/tree/master/BibliotecaDeClases)
 * [WebApi - CodeFirst](https://github.com/TheNefelin/Testing_.NETCore/tree/master/WebApi_CodeFirst)
 * [WebApi - DataBaseFirst](https://github.com/TheNefelin/Testing_.NETCore/tree/master/WebApi_DataBaseFirst)
