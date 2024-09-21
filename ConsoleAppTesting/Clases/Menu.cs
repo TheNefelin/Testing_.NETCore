@@ -2,6 +2,7 @@
 using ConsoleAppTesting.InjeccionDeDependencia.Repositories;
 using ConsoleAppTesting.InjeccionDeDependencia.Services;
 using ConsoleAppTesting.InjeccionDeDependencia.Services.imp;
+using System.Collections.Generic;
 
 namespace ConsoleAppTesting.Clases
 {
@@ -12,10 +13,12 @@ namespace ConsoleAppTesting.Clases
             int option;
             List<string> opciones =
             [
-                "1.- Hash Password",
+                "1.- Password Hash and Salt",
                 "2.- Fake Hacker",
                 "3.- Dependency Injection",
-                "4.- Salir",
+                "4.- Encrypt",
+                "5.- Key Generator",
+                "6.- Salir",
             ];
 
             do
@@ -42,6 +45,10 @@ namespace ConsoleAppTesting.Clases
                             StartFakeHacker(opciones[option - 1]);
                         if (option == 3)
                             StartDependencyInjection(opciones[option - 1]);
+                        if (option == 4)
+                            Encrypt(opciones[option - 1]);
+                        if (option == 5)
+                            GenerateKey(opciones[option - 1]);
                         if (option == opciones.Count)
                             StartSalir(opciones[option - 1]);
                     }
@@ -194,6 +201,44 @@ namespace ConsoleAppTesting.Clases
             {
                 communicationService.SendMessage(customer, message);
             }
+        }
+
+        private void Encrypt(string txt)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"----------------------------------------------");
+            Console.WriteLine(txt);
+            Console.WriteLine($"----------------------------------------------");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("Enter a text for Encrypt: ");
+            string? newText = Console.ReadLine();
+
+            Console.WriteLine($"----------------------------------------------");
+            string encrypt = Encryption.Encrypt(newText);
+            Console.WriteLine($"Encrypt: {encrypt}");
+            
+            string decrypt = Encryption.Decrypt(encrypt);
+            Console.WriteLine($"Decrypt: {decrypt}");
+            Console.WriteLine($"----------------------------------------------");
+        }
+
+        private void GenerateKey(string txt)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"----------------------------------------------");
+            Console.WriteLine(txt);
+            Console.WriteLine($"----------------------------------------------");
+
+            string key16 = KeyGenerator.key16();
+            Console.WriteLine($"Key 128 bits (16 bytes): {key16}");
+
+            string key32 = KeyGenerator.key32();
+            Console.WriteLine($"Key 256 bits (32 bytes): {key32}");
+
+            string key64 = KeyGenerator.key64();
+            Console.WriteLine($"Key 512 bits (64 bytes): {key64}");
+            Console.WriteLine($"----------------------------------------------");
         }
 
         private void StartSalir(string txt)

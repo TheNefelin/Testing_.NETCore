@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi_AuthJWT", "WebApi_Au
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi_Auth", "WebApi_Auth\WebApi_Auth.csproj", "{915D9EFD-787C-4E95-A645-39B6AE2155AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTesting", "ConsoleAppTesting\ConsoleAppTesting.csproj", "{E3CA8880-F535-46D0-BA4E-3691547F5123}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppTesting", "ConsoleAppTesting\ConsoleAppTesting.csproj", "{E3CA8880-F535-46D0-BA4E-3691547F5123}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

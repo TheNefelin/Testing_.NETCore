@@ -7,7 +7,7 @@ namespace ConsoleAppTesting.Clases
     {
         public (string Hash, string Salt) HashPassword(string password)
         {
-            byte[] saltBytes = RandomNumberGenerator.GetBytes(128 / 8);
+            byte[] saltBytes = RandomNumberGenerator.GetBytes(16); // 16 Bytes
 
             string hashed = HashMachie(password, saltBytes);
 
@@ -30,7 +30,7 @@ namespace ConsoleAppTesting.Clases
                 salt: salt,
                 prf: KeyDerivationPrf.HMACSHA256,
                 iterationCount: 100000,
-                numBytesRequested: 256 / 8));
+                numBytesRequested: 32)); // 32 Bytes or 64 Bytes
         }
     }
 }
