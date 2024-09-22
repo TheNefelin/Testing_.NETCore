@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 
-namespace ConsoleAppTesting.Clases
+namespace ConsoleAppTesting.Utils
 {
     internal class Password
     {
-        public (string Hash, string Salt) HashPassword(string password)
+        public static (string Hash, string Salt) HashPassword(string password)
         {
             byte[] saltBytes = RandomNumberGenerator.GetBytes(16); // 16 Bytes
 
@@ -14,7 +14,7 @@ namespace ConsoleAppTesting.Clases
             return (hashed, Convert.ToBase64String(saltBytes));
         }
 
-        public bool VerifyPassword(string password, string hashedPassword, string salt)
+        public static bool VerifyPassword(string password, string hashedPassword, string salt)
         {
             byte[] saltBytes = Convert.FromBase64String(salt);
 
@@ -23,11 +23,11 @@ namespace ConsoleAppTesting.Clases
             return hashed == hashedPassword;
         }
 
-        private string HashMachie(string password, byte[] salt)
+        private static string HashMachie(string password, byte[] saltBytes)
         {
             return Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: password,
-                salt: salt,
+                salt: saltBytes,
                 prf: KeyDerivationPrf.HMACSHA256,
                 iterationCount: 100000,
                 numBytesRequested: 32)); // 32 Bytes or 64 Bytes

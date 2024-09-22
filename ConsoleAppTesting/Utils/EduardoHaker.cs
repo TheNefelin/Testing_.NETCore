@@ -1,4 +1,4 @@
-﻿namespace ConsoleAppTesting.Clases
+﻿namespace ConsoleAppTesting.Utils
 {
     internal class EduardoHaker
     {
