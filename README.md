@@ -2,16 +2,17 @@
 
 The objective of this project is to explore various aspects of building .NET applications.
 
-> Project List
+## Project List
 * [SQLServer](https://github.com/TheNefelin/Testing_.NETCore/tree/master/SqlServer.sql)
 * ClassLibrary_HxH - On Migration
 * ConsoleApp_FechaApi - On Migration
 * [WebAppMVC - Converter to .webp](https://github.com/TheNefelin/Testing_.NETCore/tree/master/WebAppMVC_webpConverter)
 
 
-> [!WARNING] Need to fix
+> [!CAUTION]
+> Need to fix
 
-> Project List
+## Project List
 * [Console App for Testing](https://github.com/TheNefelin/Testing_.NETCore/tree/master/ConsoleAppTesting)
 * [Biblioteca De Clases](https://github.com/TheNefelin/Testing_.NETCore/tree/master/BibliotecaDeClases)
 * [WebApi - CodeFirst](https://github.com/TheNefelin/Testing_.NETCore/tree/master/WebApi_CodeFirst)
