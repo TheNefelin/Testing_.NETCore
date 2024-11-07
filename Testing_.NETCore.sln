@@ -28,7 +28,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppTesting", "Consol
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi_AuthEncrypt", "WebApi_AuthEncrypt\WebApi_AuthEncrypt.csproj", "{4CDFC431-E825-4422-A90F-1B929F2DC214}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleFetchAPI", "ConsoleFetchAPI\ConsoleFetchAPI.csproj", "{31BF2391-A72C-4D57-B444-19B8292FBD6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleFetchAPI", "ConsoleFetchAPI\ConsoleFetchAPI.csproj", "{31BF2391-A72C-4D57-B444-19B8292FBD6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppMVC_webpConverter", "WebAppMVC_webpConverter\WebAppMVC_webpConverter.csproj", "{E8A739CC-4B55-4BC5-8123-C599AF5F3CBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,6 +82,10 @@ Global
 		{31BF2391-A72C-4D57-B444-19B8292FBD6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31BF2391-A72C-4D57-B444-19B8292FBD6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31BF2391-A72C-4D57-B444-19B8292FBD6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8A739CC-4B55-4BC5-8123-C599AF5F3CBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8A739CC-4B55-4BC5-8123-C599AF5F3CBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8A739CC-4B55-4BC5-8123-C599AF5F3CBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8A739CC-4B55-4BC5-8123-C599AF5F3CBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
