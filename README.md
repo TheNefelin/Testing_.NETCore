@@ -4,6 +4,7 @@ The objective of this project is to explore various aspects of building .NET app
 
 ## Project List
 * [SQLServer](https://github.com/TheNefelin/Testing_.NETCore/tree/master/SqlServer.sql)
+* [BlazorApp - TicTacToe](https://github.com/TheNefelin/Testing_.NETCore/tree/master/BlazorApp_TicTacToe)
 * ClassLibrary_HxH - On Migration
 * ConsoleApp_FechaApi - On Migration
 * [WebAppMVC - Converter to .webp](https://github.com/TheNefelin/Testing_.NETCore/tree/master/WebAppMVC_webpConverter)

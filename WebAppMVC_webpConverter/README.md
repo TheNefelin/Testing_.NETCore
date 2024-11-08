@@ -1,4 +1,4 @@
-﻿# .webp Converter WebApp (Model-View-Controller)
+﻿# .NET 8 .webp Converter WebApp (Model-View-Controller)
 
 ### Dependencies
 ```
