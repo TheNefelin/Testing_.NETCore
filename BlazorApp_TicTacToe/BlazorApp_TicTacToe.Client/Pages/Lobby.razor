@@ -1,0 +1,80 @@
+﻿@page "/lobby"
+
+@inject NavigationManager NavigationManager
+@rendermode @(new InteractiveWebAssemblyRenderMode(false))
+
+<h3>TickTacToe Lobby!</h3>
+
+@if (currentRoom is null)
+{
+    <input @bind="playerName" placeholder="Your Name" />
+    <input @bind="roomName" placeholder="Room Name" />
+    <button @onclick="CreateRoom">Create Room</button>
+
+    <h3>Rooms</h3>
+    <ul>
+        @foreach (var room in listRoom)
+        {
+            <li>
+                <button @onclick="() => JoinRoom(room.Id)">Join Room</button>
+                @room.Name
+            </li>
+        }
+    </ul>
+} 
+else 
+{
+    <CascadingValue Value="hubConnection">
+        <Room CurrentRoom="currentRoom" />
+    </CascadingValue>
+}
+
+@code {
+    private HubConnection? hubConnection;
+    private string playerName = string.Empty;
+    private string roomName = string.Empty;
+    private GameRoom? currentRoom;
+    private List<GameRoom> listRoom = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/gameHub"))
+            .Build();
+
+        hubConnection.On<List<GameRoom>>("Rooms", (roomList) =>
+        {
+            Console.WriteLine($"We got rooms: Count = {roomList.Count()}.");
+            listRoom = roomList;
+            StateHasChanged();
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    private async Task CreateRoom()
+    {
+        if (hubConnection is null)
+            return;
+
+        currentRoom = await hubConnection.InvokeAsync<GameRoom>("CreateRoom", roomName, playerName);
+    }
+
+    private async Task JoinRoom(string roomId)
+    {
+        if (hubConnection is null)
+            return;
+
+        var joinedRoom = await hubConnection.InvokeAsync<GameRoom>("JoinRoom", roomId, playerName);
+
+        if (joinedRoom is not null)
+        {
+            currentRoom = joinedRoom;
+        }
+        else
+        {
+            Console.WriteLine("Room is full or does not Exist."); 
+        }
+    }
+}
+
