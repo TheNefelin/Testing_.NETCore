@@ -38,6 +38,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp_TicTacToe", "Blaz
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp_TicTacToe.Client", "BlazorApp_TicTacToe\BlazorApp_TicTacToe.Client\BlazorApp_TicTacToe.Client.csproj", "{E9B182B7-613C-495E-93D7-C5B18C310BEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi_SignalR", "WebApi_SignalR\WebApi_SignalR.csproj", "{206A2534-8E95-4D3B-B937-CD050111A2ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console_SignalR_Client", "Console_SignalR_Client\Console_SignalR_Client.csproj", "{79E5190C-1EDB-4021-A68B-C0C47720A4AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary_SignalIR", "ClassLibrary_SignalIR\ClassLibrary_SignalIR.csproj", "{D9A7564B-8C25-40D2-B2D2-A78292945AF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +110,18 @@ Global
 		{E9B182B7-613C-495E-93D7-C5B18C310BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9B182B7-613C-495E-93D7-C5B18C310BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9B182B7-613C-495E-93D7-C5B18C310BEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{206A2534-8E95-4D3B-B937-CD050111A2ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{206A2534-8E95-4D3B-B937-CD050111A2ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{206A2534-8E95-4D3B-B937-CD050111A2ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{206A2534-8E95-4D3B-B937-CD050111A2ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79E5190C-1EDB-4021-A68B-C0C47720A4AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79E5190C-1EDB-4021-A68B-C0C47720A4AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79E5190C-1EDB-4021-A68B-C0C47720A4AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79E5190C-1EDB-4021-A68B-C0C47720A4AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9A7564B-8C25-40D2-B2D2-A78292945AF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9A7564B-8C25-40D2-B2D2-A78292945AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9A7564B-8C25-40D2-B2D2-A78292945AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9A7564B-8C25-40D2-B2D2-A78292945AF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
