@@ -34,15 +34,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppMVC_webpConverter", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary_TicTacToe", "ClassLibrary_TicTacToe\ClassLibrary_TicTacToe.csproj", "{060CF46C-3FD4-4CE6-9AFF-87043BE9DFDC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp_TicTacToe", "BlazorApp_TicTacToe\BlazorApp_TicTacToe\BlazorApp_TicTacToe.csproj", "{05CD88D2-1CFC-4573-ACA0-83177D385882}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi_SignalR", "WebApi_SignalR\WebApi_SignalR.csproj", "{206A2534-8E95-4D3B-B937-CD050111A2ED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp_TicTacToe.Client", "BlazorApp_TicTacToe\BlazorApp_TicTacToe.Client\BlazorApp_TicTacToe.Client.csproj", "{E9B182B7-613C-495E-93D7-C5B18C310BEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_SignalR_Client", "Console_SignalR_Client\Console_SignalR_Client.csproj", "{79E5190C-1EDB-4021-A68B-C0C47720A4AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi_SignalR", "WebApi_SignalR\WebApi_SignalR.csproj", "{206A2534-8E95-4D3B-B937-CD050111A2ED}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console_SignalR_Client", "Console_SignalR_Client\Console_SignalR_Client.csproj", "{79E5190C-1EDB-4021-A68B-C0C47720A4AB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary_SignalIR", "ClassLibrary_SignalIR\ClassLibrary_SignalIR.csproj", "{D9A7564B-8C25-40D2-B2D2-A78292945AF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary_SignalIR", "ClassLibrary_SignalIR\ClassLibrary_SignalIR.csproj", "{D9A7564B-8C25-40D2-B2D2-A78292945AF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,14 +98,6 @@ Global
 		{060CF46C-3FD4-4CE6-9AFF-87043BE9DFDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{060CF46C-3FD4-4CE6-9AFF-87043BE9DFDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{060CF46C-3FD4-4CE6-9AFF-87043BE9DFDC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05CD88D2-1CFC-4573-ACA0-83177D385882}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05CD88D2-1CFC-4573-ACA0-83177D385882}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05CD88D2-1CFC-4573-ACA0-83177D385882}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05CD88D2-1CFC-4573-ACA0-83177D385882}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E9B182B7-613C-495E-93D7-C5B18C310BEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E9B182B7-613C-495E-93D7-C5B18C310BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E9B182B7-613C-495E-93D7-C5B18C310BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9B182B7-613C-495E-93D7-C5B18C310BEA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{206A2534-8E95-4D3B-B937-CD050111A2ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{206A2534-8E95-4D3B-B937-CD050111A2ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{206A2534-8E95-4D3B-B937-CD050111A2ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
