@@ -40,6 +40,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console_SignalR_Client", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary_SignalIR", "ClassLibrary_SignalIR\ClassLibrary_SignalIR.csproj", "{D9A7564B-8C25-40D2-B2D2-A78292945AF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppBlazor_TicTacToe", "WebAppBlazor_TicTacToe\WebAppBlazor_TicTacToe\WebAppBlazor_TicTacToe.csproj", "{CE6ACBA7-4CD6-4579-87D9-36D4B7221BA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppBlazor_TicTacToe.Client", "WebAppBlazor_TicTacToe\WebAppBlazor_TicTacToe.Client\WebAppBlazor_TicTacToe.Client.csproj", "{660D34C6-BEEC-4F02-ADF3-5A969F8C129E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +114,14 @@ Global
 		{D9A7564B-8C25-40D2-B2D2-A78292945AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9A7564B-8C25-40D2-B2D2-A78292945AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9A7564B-8C25-40D2-B2D2-A78292945AF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE6ACBA7-4CD6-4579-87D9-36D4B7221BA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE6ACBA7-4CD6-4579-87D9-36D4B7221BA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE6ACBA7-4CD6-4579-87D9-36D4B7221BA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE6ACBA7-4CD6-4579-87D9-36D4B7221BA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{660D34C6-BEEC-4F02-ADF3-5A969F8C129E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{660D34C6-BEEC-4F02-ADF3-5A969F8C129E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{660D34C6-BEEC-4F02-ADF3-5A969F8C129E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{660D34C6-BEEC-4F02-ADF3-5A969F8C129E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
