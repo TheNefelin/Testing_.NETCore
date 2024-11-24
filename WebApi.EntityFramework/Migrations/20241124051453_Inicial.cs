@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace WebApi_CodeFirst.Migrations
+namespace WebApi.EntityFramework.Migrations
 {
     /// <inheritdoc />
     public partial class Inicial : Migration
@@ -13,17 +13,17 @@ namespace WebApi_CodeFirst.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Cazadores",
+                name: "Hunter",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "VARCHAR(50)", nullable: false),
-                    Edad = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "VARCHAR(50)", nullable: false),
+                    Age = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cazadores", x => x.Id);
+                    table.PrimaryKey("PK_Hunter", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -32,8 +32,8 @@ namespace WebApi_CodeFirst.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "VARCHAR(50)", nullable: false),
-                    Descripcion = table.Column<string>(type: "VARCHAR(256)", nullable: false)
+                    Name = table.Column<string>(type: "VARCHAR(50)", nullable: false),
+                    Description = table.Column<string>(type: "VARCHAR(256)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,32 +41,32 @@ namespace WebApi_CodeFirst.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CazadorNen",
+                name: "Hunter_Nen",
                 columns: table => new
                 {
-                    Id_Cazador = table.Column<int>(type: "int", nullable: false),
-                    Id_Nen = table.Column<int>(type: "int", nullable: false)
+                    Hunter_Id = table.Column<int>(type: "int", nullable: false),
+                    Nen_Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CazadorNen", x => new { x.Id_Cazador, x.Id_Nen });
+                    table.PrimaryKey("PK_Hunter_Nen", x => new { x.Hunter_Id, x.Nen_Id });
                     table.ForeignKey(
-                        name: "FK_CazadorNen_Cazadores_Id_Cazador",
-                        column: x => x.Id_Cazador,
-                        principalTable: "Cazadores",
+                        name: "FK_Hunter_Nen_Hunter_Hunter_Id",
+                        column: x => x.Hunter_Id,
+                        principalTable: "Hunter",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_CazadorNen_Nen_Id_Nen",
-                        column: x => x.Id_Nen,
+                        name: "FK_Hunter_Nen_Nen_Nen_Id",
+                        column: x => x.Nen_Id,
                         principalTable: "Nen",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
-                table: "Cazadores",
-                columns: new[] { "Id", "Edad", "Nombre" },
+                table: "Hunter",
+                columns: new[] { "Id", "Age", "Name" },
                 values: new object[,]
                 {
                     { 1, 12, "Gon Freecss" },
@@ -77,7 +77,7 @@ namespace WebApi_CodeFirst.Migrations
 
             migrationBuilder.InsertData(
                 table: "Nen",
-                columns: new[] { "Id", "Descripcion", "Nombre" },
+                columns: new[] { "Id", "Description", "Name" },
                 values: new object[,]
                 {
                     { 1, "Si un estudiante aumenta la cantidad de agua en el vaso durante su prueba del agua, es de Intensificación", "Intensificación" },
@@ -89,8 +89,8 @@ namespace WebApi_CodeFirst.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "CazadorNen",
-                columns: new[] { "Id_Cazador", "Id_Nen" },
+                table: "Hunter_Nen",
+                columns: new[] { "Hunter_Id", "Nen_Id" },
                 values: new object[,]
                 {
                     { 1, 1 },
@@ -101,19 +101,19 @@ namespace WebApi_CodeFirst.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CazadorNen_Id_Nen",
-                table: "CazadorNen",
-                column: "Id_Nen");
+                name: "IX_Hunter_Nen_Nen_Id",
+                table: "Hunter_Nen",
+                column: "Nen_Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CazadorNen");
+                name: "Hunter_Nen");
 
             migrationBuilder.DropTable(
-                name: "Cazadores");
+                name: "Hunter");
 
             migrationBuilder.DropTable(
                 name: "Nen");

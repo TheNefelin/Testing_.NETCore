@@ -1,6 +1,0 @@
-@WebApi_DataBaseFirst_HostAddress = http://localhost:5014
-
-GET {{WebApi_DataBaseFirst_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

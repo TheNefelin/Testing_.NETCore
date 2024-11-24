@@ -3,25 +3,25 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebApi_CodeFirst.Connections;
+using WebApi.EntityFramework.Connections;
 
 #nullable disable
 
-namespace WebApi_CodeFirst.Migrations
+namespace WebApi.EntityFramework.Migrations
 {
-    [DbContext(typeof(WebApiDbContext))]
-    partial class WebApiDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(EntityDbContext))]
+    partial class EntityDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BibliotecaDeClases.Models.CazadorModel", b =>
+            modelBuilder.Entity("ClassLibrary.Models.Entities.Hunter", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -29,87 +29,87 @@ namespace WebApi_CodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Edad")
+                    b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<string>("Nombre")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("VARCHAR(50)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cazadores");
+                    b.ToTable("Hunter");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Edad = 12,
-                            Nombre = "Gon Freecss"
+                            Age = 12,
+                            Name = "Gon Freecss"
                         },
                         new
                         {
                             Id = 2,
-                            Edad = 12,
-                            Nombre = "Killua Zoldyck"
+                            Age = 12,
+                            Name = "Killua Zoldyck"
                         },
                         new
                         {
                             Id = 3,
-                            Edad = 17,
-                            Nombre = "Kurapika Kurta"
+                            Age = 17,
+                            Name = "Kurapika Kurta"
                         },
                         new
                         {
                             Id = 4,
-                            Edad = 19,
-                            Nombre = "Leorio Paladiknight"
+                            Age = 19,
+                            Name = "Leorio Paladiknight"
                         });
                 });
 
-            modelBuilder.Entity("BibliotecaDeClases.Models.CazadorNenModel", b =>
+            modelBuilder.Entity("ClassLibrary.Models.Entities.Hunter_Nen", b =>
                 {
-                    b.Property<int>("Id_Cazador")
+                    b.Property<int>("Hunter_Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id_Nen")
+                    b.Property<int>("Nen_Id")
                         .HasColumnType("int");
 
-                    b.HasKey("Id_Cazador", "Id_Nen");
+                    b.HasKey("Hunter_Id", "Nen_Id");
 
-                    b.HasIndex("Id_Nen");
+                    b.HasIndex("Nen_Id");
 
-                    b.ToTable("CazadorNen");
+                    b.ToTable("Hunter_Nen");
 
                     b.HasData(
                         new
                         {
-                            Id_Cazador = 1,
-                            Id_Nen = 1
+                            Hunter_Id = 1,
+                            Nen_Id = 1
                         },
                         new
                         {
-                            Id_Cazador = 2,
-                            Id_Nen = 2
+                            Hunter_Id = 2,
+                            Nen_Id = 2
                         },
                         new
                         {
-                            Id_Cazador = 3,
-                            Id_Nen = 3
+                            Hunter_Id = 3,
+                            Nen_Id = 3
                         },
                         new
                         {
-                            Id_Cazador = 3,
-                            Id_Nen = 6
+                            Hunter_Id = 3,
+                            Nen_Id = 6
                         },
                         new
                         {
-                            Id_Cazador = 4,
-                            Id_Nen = 4
+                            Hunter_Id = 4,
+                            Nen_Id = 4
                         });
                 });
 
-            modelBuilder.Entity("BibliotecaDeClases.Models.NenModel", b =>
+            modelBuilder.Entity("ClassLibrary.Models.Entities.Nen", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,11 +117,11 @@ namespace WebApi_CodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Descripcion")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("VARCHAR(256)");
 
-                    b.Property<string>("Nombre")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("VARCHAR(50)");
 
@@ -133,68 +133,68 @@ namespace WebApi_CodeFirst.Migrations
                         new
                         {
                             Id = 1,
-                            Descripcion = "Si un estudiante aumenta la cantidad de agua en el vaso durante su prueba del agua, es de Intensificación",
-                            Nombre = "Intensificación"
+                            Description = "Si un estudiante aumenta la cantidad de agua en el vaso durante su prueba del agua, es de Intensificación",
+                            Name = "Intensificación"
                         },
                         new
                         {
                             Id = 2,
-                            Descripcion = "Si un estudiante cambia el sabor del agua durante su prueba del agua es un Transformador",
-                            Nombre = "Transformación"
+                            Description = "Si un estudiante cambia el sabor del agua durante su prueba del agua es un Transformador",
+                            Name = "Transformación"
                         },
                         new
                         {
                             Id = 3,
-                            Descripcion = "Si un estudiante hace aparecer impurezas en el agua del vaso durante su prueba ellos son Materialización",
-                            Nombre = "Materialización"
+                            Description = "Si un estudiante hace aparecer impurezas en el agua del vaso durante su prueba ellos son Materialización",
+                            Name = "Materialización"
                         },
                         new
                         {
                             Id = 4,
-                            Descripcion = "Si un estudiante cambia el color del agua en el vaso durante su prueba del agua, es un Emisor",
-                            Nombre = "Emisión"
+                            Description = "Si un estudiante cambia el color del agua en el vaso durante su prueba del agua, es un Emisor",
+                            Name = "Emisión"
                         },
                         new
                         {
                             Id = 5,
-                            Descripcion = "Si un estudiante mueve la hoja flotando en el agua del vaso durante su prueba del agua, es un Manipulador",
-                            Nombre = "Manipulación"
+                            Description = "Si un estudiante mueve la hoja flotando en el agua del vaso durante su prueba del agua, es un Manipulador",
+                            Name = "Manipulación"
                         },
                         new
                         {
                             Id = 6,
-                            Descripcion = "Si un estudiante hace algún otro efecto durante su prueba del agua, son Especialistas",
-                            Nombre = "Especialización"
+                            Description = "Si un estudiante hace algún otro efecto durante su prueba del agua, son Especialistas",
+                            Name = "Especialización"
                         });
                 });
 
-            modelBuilder.Entity("BibliotecaDeClases.Models.CazadorNenModel", b =>
+            modelBuilder.Entity("ClassLibrary.Models.Entities.Hunter_Nen", b =>
                 {
-                    b.HasOne("BibliotecaDeClases.Models.CazadorModel", "Cazador")
-                        .WithMany("Cazador_Nen")
-                        .HasForeignKey("Id_Cazador")
+                    b.HasOne("ClassLibrary.Models.Entities.Hunter", "Hunter")
+                        .WithMany("Hunter_Nen")
+                        .HasForeignKey("Hunter_Id")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BibliotecaDeClases.Models.NenModel", "Nen")
-                        .WithMany("Cazador_Nen")
-                        .HasForeignKey("Id_Nen")
+                    b.HasOne("ClassLibrary.Models.Entities.Nen", "Nen")
+                        .WithMany("Hunter_Nen")
+                        .HasForeignKey("Nen_Id")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Cazador");
+                    b.Navigation("Hunter");
 
                     b.Navigation("Nen");
                 });
 
-            modelBuilder.Entity("BibliotecaDeClases.Models.CazadorModel", b =>
+            modelBuilder.Entity("ClassLibrary.Models.Entities.Hunter", b =>
                 {
-                    b.Navigation("Cazador_Nen");
+                    b.Navigation("Hunter_Nen");
                 });
 
-            modelBuilder.Entity("BibliotecaDeClases.Models.NenModel", b =>
+            modelBuilder.Entity("ClassLibrary.Models.Entities.Nen", b =>
                 {
-                    b.Navigation("Cazador_Nen");
+                    b.Navigation("Hunter_Nen");
                 });
 #pragma warning restore 612, 618
         }
