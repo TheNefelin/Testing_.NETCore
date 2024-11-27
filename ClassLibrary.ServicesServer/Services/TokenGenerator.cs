@@ -1,20 +1,21 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using ClassLibrary.ServicesServer.DTOs;
+using ClassLibrary.Models.DTOs;
+using ClassLibrary.ServicesServer.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ClassLibrary.ServicesServer.Services
 {
     public class TokenGenerator : ITokenGenerator
     {
-        public TokenDTO GenerateToken(AuthDTO auth)
+        public TokenDTO GenerateToken(ApiAuthDTO auth)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var claims = new List<Claim>() {
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new(JwtRegisteredClaimNames.Sub, auth.UserId),
+                new(JwtRegisteredClaimNames.Sub, auth.UserId.ToString()),
                 new(JwtRegisteredClaimNames.Email, auth.Email),
             };
 

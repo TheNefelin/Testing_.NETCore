@@ -8,9 +8,12 @@ ClassLibrary.ServicesServer
 
 ### Tabla de Contenidos
 - [Ir a Implementar Swagger o Scalar](#implementar-swagger-o-scalar)
-- [Ir a Auth con JWT](auth-con-jwt)
+- [Ir a Auth con JWT](#auth-con-jwt)
 - [Ir a CodeFirst](#codefirst)
 - [Ir a DataBaseFirst](#databasefirst)
+- [Ir a Docker](#docker)
+- [Ir a Docker SQL Server](#docker-sql-server)
+- [Ir a SQL Server](#sql-server)
 
 ## Implementar Swagger o Scalar
 * La aplicacion se levantara en [https://localhost:7283/openapi/v1.json](https://localhost:7283/openapi/v1.json)
@@ -120,8 +123,8 @@ app.UseAuthorization();
 ## CodeFirst
 * Dependencia
 ```
+Microsoft.EntityFrameworkCore.Design
 Microsoft.EntityFrameworkCore.SqlServer
-Microsoft.EntityFrameworkCore.Tools
 ```
 * appsettings.json
 ```
@@ -137,8 +140,8 @@ builder.Services.AddDbContext<EntityDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("RutaSQL"));
 });
 ```
-* Crear la clase de conexion DbContext.cs
-1. Agregar DbContext para una conexion
+* Crear la clase de conexión DbContext.cs
+1. Agregar DbContexto para una conexión
 ```
 public EntityDbContext(DbContextOptions options) : base(options)
 {
@@ -151,12 +154,12 @@ public EntityDbContext(DbContextOptions<EntityDbContext> options) : base(options
 }
 ```
 * Emigrar entidades
-1. Conexion unica Consola NuGet
+1. Conexión única Consola NuGet
 ```
 Add-Migration Inicial
 Update-DataBase
 ```
-2. Conexion multiple Consola NuGet
+2. Conexión múltiple Consola NuGet
 ```
 Add-Migration -Context EntityDbContext Inicial
 Update-DataBase -Context EntityDbContext
@@ -165,10 +168,67 @@ Update-DataBase -Context EntityDbContext
 ## DataBaseFirst
 * Dependencia
 ```
+Microsoft.EntityFrameworkCore.Design
 Microsoft.EntityFrameworkCore.SqlServer
-Microsoft.EntityFrameworkCore.Tools
 ```
 * Consola NuGet
 ```
 Scaffold-DbContext "Server=localhost; Database=db_testing; User ID=testing; Password=testing; TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+```
+
+## Docker
+* Docker file
+* Crear la imagen
+```
+docker build -t webapi.testing:1.0 .
+```
+* Correr el contenedor
+```
+docker run -d -p 8080:80 --name api-microservicio webapi.testing:1.0
+```
+
+## Docker SQL Server
+* Descargar imagen SQL Server
+```
+docker pull mcr.microsoft.com/mssql/server 
+```
+* Crear contenedor
+* -e "ACCEPT_EULA=Y" -> aceptar términos y condiciones
+* -e "MSSQL_SA_PASSWORD=mysecretpassword" -> Contraseña SA
+* -e "MSSQL_PID=Developer" -> Versión developer
+* -p 1433:1433 -> Puerto local:puerto contenedor
+* --name SQLServer -> Nombre del contenedor
+```
+docker container create -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=mysecretpassword" -e "MSSQL_PID=Developer" -p 1433:1433 --name SQLServer mcr.microsoft.com/mssql/server
+```
+* Iniciar contenedor
+```
+docker container start <CONTAINER ID>
+```
+
+## SQL Server
+* Revisar usuarios
+```
+SELECT 
+	NAME AS LoginName, 
+	TYPE_DESC AS AccountType, 
+	create_date, 
+	modify_date,
+	TYPE
+FROM sys.server_principals
+WHERE TYPE IN ('S', 'U', 'G');
+GO
+```
+* Crear base de datos db_testing con un usuario testing y clave testing
+```
+CREATE LOGIN testing WITH PASSWORD = 'testing', CHECK_POLICY = OFF;
+GO
+CREATE DATABASE db_testing
+GO
+USE db_testing
+GO
+CREATE USER testing FOR LOGIN testing;
+GO
+EXEC sp_addrolemember 'db_owner', 'testing';
+GO
 ```

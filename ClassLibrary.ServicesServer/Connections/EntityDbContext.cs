@@ -1,7 +1,7 @@
 ﻿using ClassLibrary.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebApi.EntityFramework.Connections
+namespace ClassLibrary.ServicesServer.Connections
 {
     public class EntityDbContext : DbContext
     {
@@ -9,12 +9,20 @@ namespace WebApi.EntityFramework.Connections
         {
         }
 
+        public DbSet<User> Users { get; set; }
         public DbSet<Hunter> Hunter { get; set; }
         public DbSet<Nen> Nen { get; set; }
         public DbSet<Hunter_Nen> Hunter_Nen { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>(t =>
+            {
+                t.Property(c => c.Email).HasColumnType("VARCHAR(100)");
+                t.Property(c => c.Hash1).HasColumnType("VARCHAR(256)");
+                t.Property(c => c.Salt1).HasColumnType("VARCHAR(256)");
+            });
+
             modelBuilder.Entity<Hunter>(t =>
             {
                 t.HasKey(c => c.Id);

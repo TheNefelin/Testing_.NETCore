@@ -1,10 +1,13 @@
 using System.Text;
+using ClassLibrary.Models.DTOs;
+using ClassLibrary.Models.Entities;
+using ClassLibrary.ServicesServer.Connections;
+using ClassLibrary.ServicesServer.Interfaces;
 using ClassLibrary.ServicesServer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
-using WebApi.EntityFramework.Connections;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,7 @@ builder.Services.AddDbContext<EntityDbContext>(options =>
 });
 
 builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
+builder.Services.AddTransient<IServiceBaseCRUD<HunterDTO, Hunter>, HunterService>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -1,8 +1,8 @@
-﻿namespace ClassLibrary.ServicesServer.DTOs
+﻿namespace ClassLibrary.Models.DTOs
 {
-    public class AuthDTO
+    public class ApiAuthDTO
     {
-        public required string UserId { get; set; }
+        public required Guid UserId { get; set; }
         public required string UserName { get; set; }
         public required string Email { get; set; }
         public required string Key { get; set; }

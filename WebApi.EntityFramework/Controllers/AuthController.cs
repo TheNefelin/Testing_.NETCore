@@ -1,10 +1,10 @@
-﻿using ClassLibrary.ServicesServer.DTOs;
-using ClassLibrary.ServicesServer.Services;
+﻿using ClassLibrary.Models.DTOs;
+using ClassLibrary.ServicesServer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.EntityFramework.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -17,17 +17,23 @@ namespace WebApi.EntityFramework.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost]
+        [HttpPost("register")]
+        public async Task<IActionResult> registerAsync(RegisterRequestDTO register, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPost("login")]
         public async Task<ActionResult<TokenDTO>> LoginAsync(LoginRequestDTO login, CancellationToken cancellationToken)
         {
-            if (!login.Email.Equals("a@a") || !login.Password.Equals("123"))
+            if (!login.Email.Equals("a@a") || !login.Password.Equals("123456"))
             {
                 return Unauthorized(new { message = "Usuario o Contraseña Incorrecta" });
             }
 
-            var auth = new AuthDTO()
+            var apiAuth = new ApiAuthDTO()
             {
-                UserId = "ABC123",
+                UserId = Guid.NewGuid(),
                 UserName = login.Email,
                 Email = login.Email,
                 Key = _configuration["JWT:Key"]!,
@@ -36,7 +42,7 @@ namespace WebApi.EntityFramework.Controllers
                 ExpiresMin = int.Parse(_configuration["JWT:ExpireMin"]!),
             };
 
-            var token = _tokenGenerator.GenerateToken(auth);
+            var token = _tokenGenerator.GenerateToken(apiAuth);
 
             return Ok(token);
         }

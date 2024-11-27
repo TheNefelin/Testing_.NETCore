@@ -1,4 +1,4 @@
-﻿namespace ClassLibrary.ServicesServer.DTOs
+﻿namespace ClassLibrary.Models.DTOs
 {
     public class TokenDTO
     {

@@ -1,6 +1,0 @@
-@WebApi_AuthEncrypt_HostAddress = http://localhost:5135
-
-GET {{WebApi_AuthEncrypt_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

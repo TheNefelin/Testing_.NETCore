@@ -1,28 +1,16 @@
-﻿using ClassLibrary.Models.DTOs;
-using ClassLibrary.Models.Entities;
-using ClassLibrary.ServicesServer.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+
 namespace WebApi.EntityFramework.Controllers
 {
-    [Route("api/hunter")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class HunterController : ControllerBase
+    public class NenController : ControllerBase
     {
-        private readonly IServiceBaseCRUD<HunterDTO, Hunter> _service;
-
-        public HunterController(IServiceBaseCRUD<HunterDTO, Hunter> service)
-        {
-            _service = service;
-        }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HunterDTO>>> GetAll(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            var result = await _service.GetAllAsync(cancellationToken);
-
-            if (result == null || !result.Any()) return NotFound();
-
-            return Ok(result);
+            throw new NotImplementedException();
         }
 
         [HttpGet("{id}")]
