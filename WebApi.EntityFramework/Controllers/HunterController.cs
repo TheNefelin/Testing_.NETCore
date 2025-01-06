@@ -1,5 +1,4 @@
 ﻿using ClassLibrary.Models.DTOs;
-using ClassLibrary.Models.Entities;
 using ClassLibrary.ServicesServer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 namespace WebApi.EntityFramework.Controllers
@@ -8,45 +7,46 @@ namespace WebApi.EntityFramework.Controllers
     [ApiController]
     public class HunterController : ControllerBase
     {
-        private readonly IServiceBaseCRUD<HunterDTO, Hunter> _service;
+        private readonly IBaseCRUD<HunterDTO, HunterGetDTO> _service;
 
-        public HunterController(IServiceBaseCRUD<HunterDTO, Hunter> service)
+        public HunterController(IBaseCRUD<HunterDTO, HunterGetDTO> service)
         {
             _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HunterDTO>>> GetAll(CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponseDTO<IEnumerable<HunterDTO>>>> GetAll(CancellationToken cancellationToken)
         {
-            var result = await _service.GetAllAsync(cancellationToken);
-
-            if (result == null || !result.Any()) return NotFound();
-
-            return Ok(result);
+            var response = await _service.GetAllAsync(cancellationToken);
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponseDTO<HunterGetDTO>>> GetById(int id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = await _service.GetByIdAsync(id, cancellationToken);
+            return StatusCode(response.StatusCode, response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Insert(CancellationToken cancellationToken)
+        public async Task<ActionResult<ApiResponseDTO<HunterDTO>>> Create(HunterDTO hunterDTO, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = await _service.CreateAsync(hunterDTO, cancellationToken);
+            return StatusCode(response.StatusCode, response);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update(CancellationToken cancellationToken)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ApiResponseDTO<HunterDTO>>> Update(int id, HunterDTO hunterDTO, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = await _service.UpdateAsync(id, hunterDTO, cancellationToken);
+            return StatusCode(response.StatusCode, response);
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete(CancellationToken cancellationToken)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ApiResponseDTO<object>>> Delete(int id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = await _service.DeleteAsync(id, cancellationToken);
+            return StatusCode(response.StatusCode, response);
         }
     }
 }

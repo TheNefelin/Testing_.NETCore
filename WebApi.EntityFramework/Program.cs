@@ -1,15 +1,15 @@
 using System.Text;
 using ClassLibrary.Models.DTOs;
-using ClassLibrary.Models.Entities;
 using ClassLibrary.ServicesServer.Connections;
 using ClassLibrary.ServicesServer.Interfaces;
 using ClassLibrary.ServicesServer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddDbContext<EntityDbContext>(options =>
@@ -18,7 +18,9 @@ builder.Services.AddDbContext<EntityDbContext>(options =>
 });
 
 builder.Services.AddSingleton<ITokenGenerator, TokenGenerator>();
-builder.Services.AddTransient<IServiceBaseCRUD<HunterDTO, Hunter>, HunterService>();
+builder.Services.AddTransient<IBaseCRUD<HunterDTO, HunterGetDTO>, HunterService>();
+builder.Services.AddTransient<IBaseCRUD<NenDTO, NenGetDTO>, NenService>();
+builder.Services.AddTransient<ISimpleCRUD<HunterNenDTO>, HunterNenService>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -42,12 +44,27 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+app.MapDefaultEndpoints();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
 }
+
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/openapi/v1.json", "Swagger Api v1");
+    options.RoutePrefix = string.Empty;
+});
+
+app.UseCors(options =>
+{
+    options.AllowAnyHeader();
+    options.AllowAnyMethod();
+    options.AllowCredentials();
+    options.SetIsOriginAllowed(origin => true);
+});
 
 app.UseHttpsRedirection();
 

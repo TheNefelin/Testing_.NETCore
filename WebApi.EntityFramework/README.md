@@ -8,6 +8,7 @@ ClassLibrary.ServicesServer
 
 ### Tabla de Contenidos
 - [Ir a Implementar Swagger o Scalar](#implementar-swagger-o-scalar)
+- [Ir a CORS](#cors)
 - [Ir a Auth con JWT](#auth-con-jwt)
 - [Ir a CodeFirst](#codefirst)
 - [Ir a DataBaseFirst](#databasefirst)
@@ -30,6 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/openapi/v1.json", "Swagger Api v1");
+        options.RoutePrefix = string.Empty; // https://localhost:7283
     });
 }
 ```
@@ -48,6 +50,17 @@ if (app.Environment.IsDevelopment())
 }
 ```
 * La aplicacion se levantara en [https://localhost:7283/scalar/v1](https://localhost:7283/scalar/v1)
+
+## CORS
+```
+app.UseCors(options =>
+{
+    options.AllowAnyHeader();
+    options.AllowAnyMethod();
+    options.AllowCredentials();
+    options.SetIsOriginAllowed(origin => true);
+});
+```
 
 ## Auth con JWT
 [jwt.io](https://jwt.io/) <br>

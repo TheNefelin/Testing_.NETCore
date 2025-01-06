@@ -2,8 +2,8 @@
 {
     public class ApiResponseDTO<T>
     {
-        public int StatusCode { get; set; }
-        public string Message { get; set; } = string.Empty;
+        public required int StatusCode { get; set; }
+        public required string Message { get; set; }
         public T? Data { get; set; }
     }
 }
