@@ -1,0 +1,57 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<section class="p-4 mt-4 grid grid-flow-row gap-4 justify-center bg-base-100">
+    <section class="container px-4 py-2 rounded shadow-lg bg-base-300">
+        <div class="flex gap-2">
+            <input type="radio" name="radio-1" class="radio radio-error" checked="checked" />
+            <label>Only convert to WebP</label>
+        </div>
+
+        <div class="divider m-0"></div>
+
+        <div class="flex gap-2">
+            <label class="form-control max-w-xs">Quality:</label>
+            <input type="text" placeholder="65" class="input input-bordered input-sm w-20" />
+        </div>
+    </section>
+
+    <section class="container px-4 py-2 rounded shadow-lg bg-base-300">
+        <div class="flex gap-2">
+            <input type="radio" name="radio-1" class="radio radio-error" />
+            <label>convert to WebP with Max-W Max-H Max-Ratio</label>
+        </div>
+
+        <div class="divider m-0"></div>
+
+        <div class="flex gap-2">
+            <div class="flex gap-2">
+                <label class="form-control max-w-xs">Width:</label>
+                <input type="text" placeholder="800" class="input input-bordered input-sm w-20" />
+            </div>
+            <div class="flex gap-2">
+                <label class="form-control max-w-xs">Height:</label>
+                <input type="text" placeholder="600" class="input input-bordered input-sm w-20" />
+            </div>
+            <div class="flex gap-2">
+                <label class="form-control max-w-xs">Ratio:</label>
+                <input type="text" placeholder="4/3" class="input input-bordered input-sm w-20" disabled />
+            </div>
+            <div class="flex gap-2">
+                <label class="form-control max-w-xs">Quality:</label>
+                <input type="text" placeholder="65" class="input input-bordered input-sm w-20" />
+            </div>
+        </div>
+    </section>
+    
+    <input type="file" multiple accept="image/png, image/jpeg" class="file-input file-input-bordered w-full max-w-xs shadow-lg" />
+    <input id="processButton" type="submit" value="Process" class="btn btn-outline btn-primary shadow-lg" />
+</section>
+
+@code {
+    private string selectedOption = "OnlyWebP";
+    private bool IsOnlyWebPSelected => selectedOption == "OnlyWebP";
+    private bool IsWebPWithDimensionsSelected => selectedOption == "WebPWithDimensions";
+
+}
