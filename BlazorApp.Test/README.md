@@ -120,6 +120,7 @@ npm run build:css
 6. Dibuja el bitmap recortado en el bitmap redimensionado.
 7. Devuelve el bitmap redimensionado.
 
+```mermaid
 flowchart TD
     A[Inicio] --> B[Calcular relación de aspecto original]
     A --> C[Calcular relación de aspecto objetivo]
@@ -139,7 +140,9 @@ flowchart TD
     N --> O[Usar SKCanvas para redimensionar croppedBitmap a resizedBitmap]
     O --> P[Retornar resizedBitmap]
     P --> Q[Fin]
+```
 
+```mermaid
 graph TD
     A[Inicio] --> B[Calcular relación de aspecto original]
     A --> C[Calcular relación de aspecto objetivo]
@@ -159,4 +162,4 @@ graph TD
     N --> O[Usar SKCanvas para redimensionar croppedBitmap a resizedBitmap]
     O --> P[Retornar resizedBitmap]
     P --> Q[Fin]
-
+```
