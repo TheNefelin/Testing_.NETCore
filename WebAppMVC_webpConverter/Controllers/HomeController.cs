@@ -1,7 +1,9 @@
+using ClassLibrary.Utils.Utils;
 using Microsoft.AspNetCore.Mvc;
 using SkiaSharp;
 using System.Diagnostics;
 using WebAppMVC_webpConverter.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WebAppMVC_webpConverter.Controllers
 {
@@ -18,6 +20,9 @@ namespace WebAppMVC_webpConverter.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.Quality1 = 65;
+            ViewBag.Quality2 = 65;
+
             return View();
         }
 
@@ -34,44 +39,54 @@ namespace WebAppMVC_webpConverter.Controllers
 
         [HttpPost]
         [DisableRequestSizeLimit]
-        public IActionResult Index(List<IFormFile> imagenes)
+        public IActionResult Index(List<IFormFile> newImages)
         {
-            List<Imagen> listaImagenes = new List<Imagen>();
+            var imageProcessor = new ImageProcessor();
+            List<Imagen> imageList = new List<Imagen>();
 
-            foreach (var imagen in imagenes)
+            var uploadPath = Path.Combine(_environment.WebRootPath, "Images");
+
+            if (!Directory.Exists(uploadPath))
             {
-                // Cambia la extensión de la imagen a .webp
-                string webpImagen = Path.GetFileNameWithoutExtension(imagen.FileName) + ".webp";
+                Directory.CreateDirectory(uploadPath);
+            }
 
-                // Define la ruta donde se guardará la imagen en formato WebP en la carpeta Images
-                string rutaImagenWebP = Path.Combine(_environment.WebRootPath, "Images", webpImagen);
+            foreach (var newImage in newImages)
+            {
+                string imageWebP = Path.ChangeExtension(newImage.FileName, ".webp");
+                string outputPath = Path.Combine(uploadPath, imageWebP);
 
-                // Crear directorio si no existe
-                string carpetaImagenes = Path.GetDirectoryName(rutaImagenWebP);
-                if (!Directory.Exists(carpetaImagenes))
+                using (var imageStream = newImage.OpenReadStream())
                 {
-                    Directory.CreateDirectory(carpetaImagenes);
+                    var imageBytes = imageProcessor.ConvertToWebP_FromStream(imageStream);
+                    imageProcessor.SaveImage(imageBytes, outputPath);
                 }
 
-                // Convertir a formato WebP y guardar la imagen
-                using (var streamEntrada = imagen.OpenReadStream())
-                using (var skiaImagen = SKBitmap.Decode(streamEntrada))
-                using (var skiaImagenWebP = SKImage.FromBitmap(skiaImagen))
-                using (var datosWebP = skiaImagenWebP.Encode(SKEncodedImageFormat.Webp, 65)) // Calidad de 65
-                using (var streamSalida = new FileStream(rutaImagenWebP, FileMode.Create))
-                {
-                    datosWebP.SaveTo(streamSalida);
-                }
+                // ClasicConvert
+                //using (var imageStream = imagen.OpenReadStream())
+                //ClasicConvert(streamEntrada, rutaImagenWebP);
 
                 // Agregar la información de la imagen a la lista
-                listaImagenes.Add(new Imagen
+                imageList.Add(new Imagen
                 {
-                    NomImagen = webpImagen,
-                    RutaImagen = "/Images/" + webpImagen,
+                    NomImagen = imageWebP,
+                    RutaImagen = "/Images/" + imageWebP,
                 });
             }
 
-            return View(listaImagenes);
+            return View(imageList);
+        }
+
+        private void ClasicConvert(Stream streamEntrada, string rutaImagenWebP)
+        {
+            // Convertir a formato WebP y guardar la imagen
+            using (var skiaImagen = SKBitmap.Decode(streamEntrada))
+            using (var skiaImagenWebP = SKImage.FromBitmap(skiaImagen))
+            using (var datosWebP = skiaImagenWebP.Encode(SKEncodedImageFormat.Webp, 65)) // Calidad de 65
+            using (var streamSalida = new FileStream(rutaImagenWebP, FileMode.Create))
+            {
+                datosWebP.SaveTo(streamSalida);
+            }
         }
 
     }

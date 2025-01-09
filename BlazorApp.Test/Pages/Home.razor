@@ -1,26 +1,27 @@
 ﻿@page "/"
+@using BlazorApp.Test.Utils
 
 <PageTitle>Home</PageTitle>
 
-<section class="p-4 mt-4 grid grid-flow-row gap-4 justify-center bg-base-100">
+<div method="post" class="p-4 mt-4 grid grid-flow-row gap-4 justify-center bg-base-100">
     <section class="container px-4 py-2 rounded shadow-lg bg-base-300">
         <div class="flex gap-2">
             <input type="radio" name="radio-1" class="radio radio-error" checked="checked" />
-            <label>Only convert to WebP</label>
+            <label>Convert to WebP</label>
         </div>
 
         <div class="divider m-0"></div>
 
         <div class="flex gap-2">
             <label class="form-control max-w-xs">Quality:</label>
-            <input type="text" placeholder="65" class="input input-bordered input-sm w-20" />
+            <input @bind="Quality" type="text" class="input input-bordered input-sm w-20" />
         </div>
     </section>
 
     <section class="container px-4 py-2 rounded shadow-lg bg-base-300">
         <div class="flex gap-2">
             <input type="radio" name="radio-1" class="radio radio-error" />
-            <label>convert to WebP with Max-W Max-H Max-Ratio</label>
+            <label>Convert to WebP with Max-W Max-H (Ratio)</label>
         </div>
 
         <div class="divider m-0"></div>
@@ -28,30 +29,76 @@
         <div class="flex gap-2">
             <div class="flex gap-2">
                 <label class="form-control max-w-xs">Width:</label>
-                <input type="text" placeholder="800" class="input input-bordered input-sm w-20" />
+                <input @bind="Width" type="text" class="input input-bordered input-sm w-20" />
             </div>
             <div class="flex gap-2">
                 <label class="form-control max-w-xs">Height:</label>
-                <input type="text" placeholder="600" class="input input-bordered input-sm w-20" />
+                <input @bind="Height" type="text" class="input input-bordered input-sm w-20" />
             </div>
             <div class="flex gap-2">
                 <label class="form-control max-w-xs">Ratio:</label>
-                <input type="text" placeholder="4/3" class="input input-bordered input-sm w-20" disabled />
+                <input @bind="Ratio" type="text" class="input input-bordered input-sm w-20" disabled />
             </div>
             <div class="flex gap-2">
                 <label class="form-control max-w-xs">Quality:</label>
-                <input type="text" placeholder="65" class="input input-bordered input-sm w-20" />
+                <input @bind="Quality" type="text" class="input input-bordered input-sm w-20" />
             </div>
         </div>
     </section>
-    
-    <input type="file" multiple accept="image/png, image/jpeg" class="file-input file-input-bordered w-full max-w-xs shadow-lg" />
-    <input id="processButton" type="submit" value="Process" class="btn btn-outline btn-primary shadow-lg" />
-</section>
+
+    <InputFile OnChange="HandleSelectedFiles" type="file" multiple accept="image/png, image/jpeg" class="file-input file-input-bordered w-full max-w-xs shadow-lg" />
+    <input @onclick="ProcessFiles" type="submit" value="Process" class="btn btn-outline btn-primary shadow-lg" />
+
+    @if (!string.IsNullOrEmpty(DisplayMessage))
+    {
+        <div class="bg-error p-4 rounded shadow-lg ">
+            <p class="text-white">@DisplayMessage</p>
+        </div>
+    }
+</div>
 
 @code {
-    private string selectedOption = "OnlyWebP";
-    private bool IsOnlyWebPSelected => selectedOption == "OnlyWebP";
-    private bool IsWebPWithDimensionsSelected => selectedOption == "WebPWithDimensions";
+    private string DisplayMessage { get; set; } = string.Empty;
 
+    private int Width { get; set; } = 800;
+    private int Height { get; set; } = 600;
+    private int Quality { get; set; } = 65;
+    private string Ratio { get; set; } = "4/3";
+
+    private IReadOnlyList<IBrowserFile>? SelectedFiles { get; set; }
+
+    private void HandleSelectedFiles(InputFileChangeEventArgs e)
+    {
+        SelectedFiles = e.GetMultipleFiles();
+    }
+
+    private void ProcessFiles() {
+        if (SelectedFiles != null)
+        {
+            DisplayMessage = "";
+            var imageProcessor = new ImageProcessor();
+            var uploadPath = Path.Combine("wwwroot", "webp"); // Define la carpeta de destino
+
+            // Crear directorio si no existe
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+
+            foreach (var file in SelectedFiles) {
+                string imageWebP = Path.ChangeExtension(file.Name, ".webp");
+                string outputPath = Path.Combine(uploadPath, imageWebP);
+
+                using (var imageStream = file.OpenReadStream(maxAllowedSize: 1048576))
+                {
+                    var imageBytes = imageProcessor.ConvertToWebP_FromStream(imageStream);
+                    imageProcessor.SaveImage(imageBytes, outputPath);
+                }
+            }
+
+            DisplayMessage = "[SUCCESS] : Las imágenes han sido procesadas y convertidas a formato WebP.";
+        } else {
+            DisplayMessage = $"[ERROR] : {"Debe seleccionar Iamgenes .jpg .jepg .npg"}.";
+        }
+    }
 }

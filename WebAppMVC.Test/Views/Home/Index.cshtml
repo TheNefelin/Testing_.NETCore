@@ -1,0 +1,136 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+
+    int quality1 = 65;
+    int quality2 = 65;
+    int Width = 800;
+    int Height = 600;
+    var Ratio = "4/3";
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div class="container bg-secondary text-white p-4 rounded shadow-sm mb-2">
+        <div class="form-check">
+            <label class="form-check-label">
+                Cuadrado 1:1 = (1080 x 1080 ; 800 x 800) |
+            </label>
+            <label class="form-check-label">
+                Estándar 4:3 = (800 x 600 ; 1024 x 768) |
+            </label>
+            <label class="form-check-label">
+                Panorámica1 16:9 = (1920 x 1080 ; 1280 x 720) |
+            </label>
+            <label class="form-check-label">
+                Fotografía 3:2 = (6000 x 4000 ; 3000 x 2000) |
+            </label>
+            <label class="form-check-label">
+                Panorámico2 2:1 = (2000 x 1000 ; 1200 x 600) |
+            </label>
+            <label class="form-check-label">
+                Cámara 2:1 = (2500 x 2000 ; 1600 x 1280) |
+            </label>
+            <label class="form-check-label">
+                Cámara 16:10 = (1920 x 1200 ; 1440 x 900) |
+            </label>
+            <label class="form-check-label">
+                Panorámica3 21:9 = (2560 x 1080 ; 3840 x 1600)
+            </label>
+        </div>
+    </div>
+
+    <div class="container bg-secondary text-white p-4 rounded shadow-sm mb-2">
+        <div class="form-check">
+            <input id="rbToConvert" name="rbToConvert" class="form-check-input" type="radio">
+            <label for="rbToConvert" class="form-check-label">Convert to WebP</label>
+        </div>
+
+        <hr />
+
+        <div class="d-inline-flex align-items-center justify-content-center gap-2">
+            <label for="quality1" class="form-label">Quality:</label>
+            <input value="@quality1" type="number" class="form-control input-sm">
+            <input type="range" class="form-range" min="0" max="100" step="1" id="customRange3">
+        </div>
+    </div>
+
+    <div class="container bg-secondary text-white p-4 rounded shadow-sm mb-2">
+        <div class="form-check">
+            <input id="rbToConvertAndSize" name="conversionOption" class="form-check-input" type="radio">
+            <label for="rbToConvertAndSize" class="form-check-label">Convert to WebP with Max-W Max-H (Ratio)</label>
+        </div>
+
+        <hr />
+
+        <div class="d-inline-flex align-items-center justify-content-center gap-2">
+            <label for="width" class="form-label">Width:</label>
+            <input id="width" value="@Width" type="number" class="form-control input-sm">
+
+            <label for="height" class="form-label">Height:</label>
+            <input id="height" value="@Height" type="number" class="form-control input-sm">
+
+            <label for="ratio" class="form-label">Ratio:</label>
+            <input id="ratio" value="@Ratio" type="text" class="form-control input-sm" disabled>
+
+            <label for="quality2" class="form-label">Quality:</label>
+            <input id="quality2" value="@quality2" type="number" class="form-control input-sm">
+        </div>
+    </div>
+
+    <div class="container bg-secondary opacity-75 text-white p-4 rounded shadow-sm mb-2">
+        <div class="d-inline-flex gap-4">
+            <input id="newImages" name="newImages" class="form-control" type="file" id="formFileMultiple" multiple accept="image/png, image/jpeg, image/jpg">
+            <button type="submit" class="btn btn-warning">Process</button>
+        </div>
+    </div>
+</form>
+
+@if (Model != null && Model.Count > 0){
+    <h3 class="text-success">Imágenes Convertidas:</h3>
+
+    @foreach (var uploadImage in Model){
+        <div class="card mb-3" style="max-height: 250px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="@Url.Content(uploadImage.ImageLocalPath)" alt="@uploadImage.ImageName" class="img-fluid rounded-start" style="max-height: 250px; object-fit: contain;">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">@uploadImage.ImageName</h5>
+
+                        <label class="fw-bold">Original:</label>
+                        <p class="card-text">
+                            - Witdh:
+                            <span>@uploadImage.OriginalWidth</span>
+                            - Height:
+                            <span>@uploadImage.OriginalHeight</span>
+                            - Ratio:
+                            <span>@uploadImage.OriginalAspectRatio</span>
+                        </p>
+
+                        <label class="fw-bold">Nuevo:</label>
+                        <p class="card-text">
+                            - Witdh:
+                            <span>@uploadImage.TargetWidth</span>
+                            - Height:
+                            <span>@uploadImage.TargetHeight</span>
+                            - Ratio:
+                            <span>@uploadImage.TargetAspectRatio</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<script>
+    // Evento para sincronizar input1 con input2
+    quality1.addEventListener('input', (event) => {
+        quality2.value = event.target.value;
+    });
+
+    // Evento para sincronizar input2 con input1
+    quality2.addEventListener('input', (event) => {
+        quality1.value = event.target.value;
+    });
+</script>

@@ -141,25 +141,3 @@ flowchart TD
     O --> P[Retornar resizedBitmap]
     P --> Q[Fin]
 ```
-
-```mermaid
-graph TD
-    A[Inicio] --> B[Calcular relación de aspecto original]
-    A --> C[Calcular relación de aspecto objetivo]
-    A --> D[Iniciar recorte]
-    B --> E{¿Relación original > Relación objetivo?}
-    E -- Si --> F[Calcular cropWidth y cropHeight para recorte]
-    F --> G[Calcular cropX y cropY para recorte]
-    G --> H[Crear SKBitmap croppedBitmap]
-    E -- No --> I{¿Relación original < Relación objetivo?}
-    I -- Si --> J[Calcular cropWidth y cropHeight para recorte]
-    J --> K[Calcular cropX y cropY para recorte]
-    K --> H
-    I -- No --> L[Calcular cropWidth y cropHeight = targetWidth y targetHeight]
-    L --> H
-    H --> M[Usar SKCanvas para dibujar bitmap en croppedBitmap]
-    M --> N[Crear SKBitmap resizedBitmap]
-    N --> O[Usar SKCanvas para redimensionar croppedBitmap a resizedBitmap]
-    O --> P[Retornar resizedBitmap]
-    P --> Q[Fin]
-```

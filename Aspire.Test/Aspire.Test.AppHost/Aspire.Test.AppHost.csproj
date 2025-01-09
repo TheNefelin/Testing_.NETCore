@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\WebApi.EntityFramework\WebApi.EntityFramework.csproj" />
+    <ProjectReference Include="..\..\WebAppMVC.Test\WebAppMVC.Test.csproj" />
   </ItemGroup>
 
 </Project>

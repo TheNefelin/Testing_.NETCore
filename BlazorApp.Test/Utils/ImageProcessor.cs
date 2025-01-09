@@ -1,8 +1,8 @@
 ﻿using SkiaSharp;
 
-namespace ClassLibrary.Utils
+namespace BlazorApp.Test.Utils
 {
-    public class ImageUtility
+    public class ImageProcessor
     {
         private const int _quality = 65;
         private const int _targetWidth = 800;
@@ -13,49 +13,48 @@ namespace ClassLibrary.Utils
             return IsJpeg(imageBytes) || IsPng(imageBytes);
         }
 
-        public static byte[] ConvertToWebP_FromPath(string inputPath, int quality = _quality)
+        public byte[] ConvertToWebP_FromPath(string inputPath, int quality = _quality)
         {
-            using var imageStream = File.OpenRead(inputPath);   // Crear un flujo de memoria a partir de la ruta
-            using var skBitmap = SKBitmap.Decode(imageStream);  // Decodificar la imagen desde el flujo
-            using var skImage = SKImage.FromBitmap(skBitmap);   // Crear SKImage desde SKBitmap
+            using var imageStream = File.OpenRead(inputPath);                       // Crear un flujo de memoria a partir de la ruta
+            using var skBitmap = SKBitmap.Decode(imageStream);                      // Decodificar la imagen desde el flujo
+            using var skImage = SKImage.FromBitmap(skBitmap);                       // Crear SKImage desde SKBitmap
             using var skData = skImage.Encode(SKEncodedImageFormat.Webp, quality);  // Codificar a WebP
 
-            return skData.ToArray();    // Retornar los bytes del formato WebP
+            return skData.ToArray();                                                // Retornar los bytes del formato WebP
         }
 
-        public static byte[] ConvertToWebP_FromBytes(byte[] imageBytes, int quality = _quality)
+        public byte[] ConvertToWebP_FromStream(Stream imageStream, int quality = _quality)
         {
-            using var imageStream = new MemoryStream(imageBytes);   // Crear un flujo de memoria a partir del arreglo de bytes
-            using var skBitmap = SKBitmap.Decode(imageStream);      // Decodificar la imagen desde el flujo
-            using var skImage = SKImage.FromBitmap(skBitmap);       // Crear SKImage desde SKBitmap
+            using var skBitmap = SKBitmap.Decode(imageStream);                      // Decodificar la imagen desde el flujo
+            using var skImage = SKImage.FromBitmap(skBitmap);                       // Crear SKImage desde SKBitmap
             using var skData = skImage.Encode(SKEncodedImageFormat.Webp, quality);  // Codificar a WebP
 
-            return skData.ToArray();    // Retornar los bytes del formato WebP
+            return skData.ToArray();                                                // Retornar los bytes del formato WebP
         }
 
-        public static byte[] ConvertToWebP_Resize_FromBytes(byte[] imageBytes, int quality = _quality, int targetWidth = _targetWidth, int targetHeight = _targetHeight)
+        public byte[] ConvertToWebP_Resize_FromBytes(byte[] imageBytes, int quality = _quality, int targetWidth = _targetWidth, int targetHeight = _targetHeight)
         {
-            using var imageStream = new MemoryStream(imageBytes);   // Crear un flujo de memoria a partir del arreglo de bytes
-            using var skBitmap = SKBitmap.Decode(imageStream);      // Decodificar la imagen desde el flujo
-            using var resizedBitmap = ResizeAndCropImage(skBitmap, targetWidth, targetHeight);
-            using var skImage = SKImage.FromBitmap(skBitmap);       // Crear SKImage desde SKBitmap
-            using var skData = skImage.Encode(SKEncodedImageFormat.Webp, quality);  // Codificar a WebP
+            using var imageStream = new MemoryStream(imageBytes);                               // Crear un flujo de memoria a partir del arreglo de bytes
+            using var skBitmap = SKBitmap.Decode(imageStream);                                  // Decodificar la imagen desde el flujo
+            using var resizedBitmap = ResizeAndCropImage(skBitmap, targetWidth, targetHeight);  // Redimensiona el liezo y la imagen
+            using var skImage = SKImage.FromBitmap(resizedBitmap);                              // Crear SKImage desde SKBitmap
+            using var skData = skImage.Encode(SKEncodedImageFormat.Webp, quality);              // Codificar a WebP
 
-            return skData.ToArray();    // Retornar los bytes del formato WebP
+            return skData.ToArray();                                                            // Retornar los bytes del formato WebP
         }
 
-        public static void SaveImage(byte[] imageBytes, string outputPath)
+        public void SaveImage(byte[] imageBytes, string outputPath)
         {
             if (imageBytes == null || imageBytes.Length == 0)
             {
                 throw new ArgumentException("imageBytes cannot be null or empty.", nameof(imageBytes));
             }
-                
+
             File.WriteAllBytes(outputPath, imageBytes);
         }
 
         // Redimensiona y recorta la imagen manteniendo la relación de aspecto
-        private static SKBitmap ResizeAndCropImage(SKBitmap bitmap, int targetWidth, int targetHeight)
+        private SKBitmap ResizeAndCropImage(SKBitmap bitmap, int targetWidth, int targetHeight)
         {
             float originalAspectRatio = (float)bitmap.Width / bitmap.Height;
             float targetAspectRatio = (float)targetWidth / targetHeight;
