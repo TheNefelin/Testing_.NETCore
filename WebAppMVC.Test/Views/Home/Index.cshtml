@@ -1,10 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 
-    int quality = 65;
-    int Width = 800;
-    int Height = 600;
-    var Ratio = "4/3";
+    int quality = ViewBag.Quality;
+    int Width = ViewBag.Width;
+    int Height = ViewBag.Height;
+    string Ratio = ViewBag.Ratio;
 }
 
 <div class="container bg-secondary text-white p-4 rounded shadow-sm mb-2">
@@ -18,7 +18,7 @@
             <tr><th>Panorámica 1</th><td>16:9</td><td>1920 x 1080</td><td>1280 x 720</td></tr>
             <tr><th>Fotografía</th><td>3:2</td><td>6000 x 4000</td><td>3000 x 2000</td></tr>
             <tr><th>Panorámico 2</th><td>2:1</td><td>2000 x 1000</td><td>1200 x 600</td></tr>
-            <tr><th>Cámara 1</th><td>2:1</td><td>2500 x 2000</td><td>1600 x 1280</td></tr>
+            <tr><th>Cámara 1</th><td>5:4</td><td>2500 x 2000</td><td>1600 x 1280</td></tr>
             <tr><th>Cámara 2</th><td>16:10</td><td>1920 x 1200</td><td>1440 x 900</td></tr>
             <tr><th>Ultra Panorámica</th><td>21:9</td><td>2560 x 1080</td><td>3840 x 1600</td></tr>
         </tbody>
@@ -113,5 +113,34 @@
 }
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const widthInput = document.getElementById("id_width");
+        const heightInput = document.getElementById("id_height");
+        const ratioInput = document.getElementById("id_ratio");
 
+        ratioInput.value = "n/a";
+
+        function gcd(a, b) {
+            return b === 0 ? a : gcd(b, a % b);
+        }
+
+        function updateRatio() {
+            const width = parseInt(widthInput.value);
+            const height = parseInt(heightInput.value);
+
+            if (width > 0 && height > 0) {
+                const divisor = gcd(width, height);
+                ratioInput.value = `${width / divisor}/${height / divisor}`;
+            } else {
+                ratioInput.value = "Invalid";
+            }
+        }
+
+        widthInput.addEventListener("input", updateRatio);
+        heightInput.addEventListener("input", updateRatio);
+
+        // Initialize ratio on page load
+        updateRatio();
+    });
 </script>
+

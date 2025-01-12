@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using ClassLibrary.Utils.Models;
 using ClassLibrary.Utils.Utils;
@@ -21,6 +22,11 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        ViewBag.Quality = 65;
+        ViewBag.Width = 800;
+        ViewBag.Height = 600;
+        ViewBag.Ratio = "4/3";
+
         return View();
     }
 
@@ -39,6 +45,8 @@ public class HomeController : Controller
     [DisableRequestSizeLimit]
     public IActionResult Index(List<IFormFile> newImages, string conversionOption, int quality, int width, int height)
     {
+        Persistence(quality, width, height);
+
         List<UploadImage> imageList = new List<UploadImage>();
 
         if (quality <= 0 || width <= 0 || height <= 0)
@@ -99,5 +107,22 @@ public class HomeController : Controller
         }
 
         return View(imageList);
+    }
+
+    private void Persistence(int quality, int width, int height)
+    {
+        int gcd = GCD(width, height);
+        string ratio = $"{width / gcd}/{height / gcd}";
+
+        // Persistir valores
+        ViewBag.Quality = quality;
+        ViewBag.Width = width;
+        ViewBag.Height = height;
+        ViewBag.Ratio = ratio;
+    }
+
+    private int GCD(int a, int b)
+    {
+        return b == 0 ? a : GCD(b, a % b);
     }
 }
