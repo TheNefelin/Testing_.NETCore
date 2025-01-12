@@ -1,84 +1,66 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 
-    int quality1 = 65;
-    int quality2 = 65;
+    int quality = 65;
     int Width = 800;
     int Height = 600;
     var Ratio = "4/3";
 }
 
+<div class="container bg-secondary text-white p-4 rounded shadow-sm mb-2">
+    <table class="table table-hover m-0">
+        <thead>
+            <tr><th scope="col">Tipo</th><th scope="col">Relacion</th><th scope="col">WxH 1</th> <th scope="col">WxH 2</th></tr>
+        </thead>
+        <tbody id="id_table">
+            <tr><th>Cuadrado</th><td>1:1</td><td>1080 x 1080</td><td>800 x 800</td></tr>
+            <tr><th>Estándar</th><td>4:3</td><td>800 x 600</td><td>1024 x 768</td></tr>
+            <tr><th>Panorámica 1</th><td>16:9</td><td>1920 x 1080</td><td>1280 x 720</td></tr>
+            <tr><th>Fotografía</th><td>3:2</td><td>6000 x 4000</td><td>3000 x 2000</td></tr>
+            <tr><th>Panorámico 2</th><td>2:1</td><td>2000 x 1000</td><td>1200 x 600</td></tr>
+            <tr><th>Cámara 1</th><td>2:1</td><td>2500 x 2000</td><td>1600 x 1280</td></tr>
+            <tr><th>Cámara 2</th><td>16:10</td><td>1920 x 1200</td><td>1440 x 900</td></tr>
+            <tr><th>Ultra Panorámica</th><td>21:9</td><td>2560 x 1080</td><td>3840 x 1600</td></tr>
+        </tbody>
+    </table>
+</div>
+
 <form method="post" enctype="multipart/form-data">
     <div class="container bg-secondary text-white p-4 rounded shadow-sm mb-2">
         <div class="form-check">
-            <label class="form-check-label">
-                Cuadrado 1:1 = (1080 x 1080 ; 800 x 800) |
-            </label>
-            <label class="form-check-label">
-                Estándar 4:3 = (800 x 600 ; 1024 x 768) |
-            </label>
-            <label class="form-check-label">
-                Panorámica1 16:9 = (1920 x 1080 ; 1280 x 720) |
-            </label>
-            <label class="form-check-label">
-                Fotografía 3:2 = (6000 x 4000 ; 3000 x 2000) |
-            </label>
-            <label class="form-check-label">
-                Panorámico2 2:1 = (2000 x 1000 ; 1200 x 600) |
-            </label>
-            <label class="form-check-label">
-                Cámara 2:1 = (2500 x 2000 ; 1600 x 1280) |
-            </label>
-            <label class="form-check-label">
-                Cámara 16:10 = (1920 x 1200 ; 1440 x 900) |
-            </label>
-            <label class="form-check-label">
-                Panorámica3 21:9 = (2560 x 1080 ; 3840 x 1600)
-            </label>
+            <input name="conversionOption" value="convertOnly" class="form-check-input" type="radio" checked>
+            <label class="form-check-label">Convert to WebP</label>
         </div>
-    </div>
-
-    <div class="container bg-secondary text-white p-4 rounded shadow-sm mb-2">
         <div class="form-check">
-            <input id="rbToConvert" name="rbToConvert" class="form-check-input" type="radio">
-            <label for="rbToConvert" class="form-check-label">Convert to WebP</label>
+            <input name="conversionOption" value="convertAndResize" class="form-check-input" type="radio">
+            <label class="form-check-label">Convert to WebP with Max-W Max-H (Ratio)</label>
         </div>
 
         <hr />
 
         <div class="d-inline-flex align-items-center justify-content-center gap-2">
-            <label for="quality1" class="form-label">Quality:</label>
-            <input value="@quality1" type="number" class="form-control input-sm">
+            <label for="id_quality" class="form-label">Quality:</label>
+            <input id="id_quality" name="quality" value="@quality" type="number" class="form-control input-sm">
             <input type="range" class="form-range" min="0" max="100" step="1" id="customRange3">
         </div>
-    </div>
-
-    <div class="container bg-secondary text-white p-4 rounded shadow-sm mb-2">
-        <div class="form-check">
-            <input id="rbToConvertAndSize" name="conversionOption" class="form-check-input" type="radio">
-            <label for="rbToConvertAndSize" class="form-check-label">Convert to WebP with Max-W Max-H (Ratio)</label>
-        </div>
 
         <hr />
 
         <div class="d-inline-flex align-items-center justify-content-center gap-2">
-            <label for="width" class="form-label">Width:</label>
-            <input id="width" value="@Width" type="number" class="form-control input-sm">
+            <label for="id_width" class="form-label">Width:</label>
+            <input id="id_width" name="width" value="@Width" type="number" class="form-control input-sm">
 
-            <label for="height" class="form-label">Height:</label>
-            <input id="height" value="@Height" type="number" class="form-control input-sm">
+            <label for="id_height" class="form-label">Height:</label>
+            <input id="id_height" name="height" value="@Height" type="number" class="form-control input-sm">
 
-            <label for="ratio" class="form-label">Ratio:</label>
-            <input id="ratio" value="@Ratio" type="text" class="form-control input-sm" disabled>
-
-            <label for="quality2" class="form-label">Quality:</label>
-            <input id="quality2" value="@quality2" type="number" class="form-control input-sm">
+            <label for="id_ratio" class="form-label">Ratio:</label>
+            <input id="id_ratio" value="@Ratio" type="text" class="form-control input-sm" disabled>
         </div>
     </div>
 
     <div class="container bg-secondary opacity-75 text-white p-4 rounded shadow-sm mb-2">
         <div class="d-inline-flex gap-4">
-            <input id="newImages" name="newImages" class="form-control" type="file" id="formFileMultiple" multiple accept="image/png, image/jpeg, image/jpg">
+            <input id="id_newImages" name="newImages" class="form-control" type="file" id="formFileMultiple" multiple accept="image/png, image/jpeg, image/jpg">
             <button type="submit" class="btn btn-warning">Process</button>
         </div>
     </div>
@@ -88,6 +70,13 @@
     <h3 class="text-success">Imágenes Convertidas:</h3>
 
     @foreach (var uploadImage in Model){
+
+        @if (uploadImage.IsError) {
+            <div class="alert alert-danger" role="alert">
+                @uploadImage.ErrorMessage
+            </div>
+        }
+
         <div class="card mb-3" style="max-height: 250px;">
             <div class="row g-0">
                 <div class="col-md-4">
@@ -124,13 +113,5 @@
 }
 
 <script>
-    // Evento para sincronizar input1 con input2
-    quality1.addEventListener('input', (event) => {
-        quality2.value = event.target.value;
-    });
 
-    // Evento para sincronizar input2 con input1
-    quality2.addEventListener('input', (event) => {
-        quality1.value = event.target.value;
-    });
 </script>

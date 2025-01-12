@@ -1,9 +1,14 @@
+using ClassLibrary.Utils.Utils;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// New services
+builder.Services.AddSingleton<ImageProcessor>();
 
 var app = builder.Build();
 

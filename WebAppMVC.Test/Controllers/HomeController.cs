@@ -10,11 +10,13 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IWebHostEnvironment _environment;
+    private readonly ImageProcessor _imageProcessor;
 
-    public HomeController(ILogger<HomeController> logger, IWebHostEnvironment environment)
+    public HomeController(ILogger<HomeController> logger, IWebHostEnvironment environment, ImageProcessor imageProcessor)
     {
         _logger = logger;
         _environment = environment;
+        _imageProcessor = imageProcessor;
     }
 
     public IActionResult Index()
@@ -35,10 +37,21 @@ public class HomeController : Controller
 
     [HttpPost]
     [DisableRequestSizeLimit]
-    public IActionResult Index(List<IFormFile> newImages)
+    public IActionResult Index(List<IFormFile> newImages, string conversionOption, int quality, int width, int height)
     {
-        var imageProcessor = new ImageProcessor();
         List<UploadImage> imageList = new List<UploadImage>();
+
+        if (quality <= 0 || width <= 0 || height <= 0)
+        {
+            var error = new UploadImage()
+            {
+                IsError = true,
+                ErrorMessage = "Define Quality, Width and Height",
+                ImageLocalPath = "/webP/00-not-found-800x600.webp"
+            };
+
+            imageList.Add(error);
+        }            
 
         var uploadPath = Path.Combine(_environment.WebRootPath, "WebP");
         if (!Directory.Exists(uploadPath))
@@ -50,22 +63,36 @@ public class HomeController : Controller
         {
             string imageWebP = Path.ChangeExtension(newImage.FileName, ".webp");
             string outputPath = Path.Combine(uploadPath, imageWebP);
-            var uploadImages = new UploadImage()
-            {
-                ImageName = imageWebP,
-                ImageLocalPath = "/WebP/" + imageWebP,
-            };
+            DataImage dataImage = new();
+            UploadImage uploadImages = new();
 
-            using (var imageStream = newImage.OpenReadStream())
+            try
             {
-                DataImage dataImage = imageProcessor.ConvertToWebP_FromStream_AndSave(imageStream, outputPath);
+                using (var imageStream = newImage.OpenReadStream())
+                {
+                    if (conversionOption == "convertOnly")
+                    {
+                        dataImage = _imageProcessor.ConvertToWebP_FromStream_AndSave(imageStream, outputPath, quality);
+                    }
+                    else if (conversionOption == "convertAndResize")
+                    {
+                        dataImage = _imageProcessor.ConvertToWebP_FromStream_ResizeAndSave(imageStream, outputPath, quality, width, height);
+                    }
 
-                uploadImages.OriginalWidth = dataImage.OriginalWidth;
-                uploadImages.OriginalHeight = dataImage.OriginalHeight;
-                uploadImages.OriginalAspectRatio = dataImage.OriginalAspectRatio;
-                uploadImages.TargetWidth = dataImage.TargetWidth;
-                uploadImages.TargetHeight = dataImage.TargetHeight;
-                uploadImages.TargetAspectRatio = dataImage.TargetAspectRatio;
+                    uploadImages.ImageName = imageWebP;
+                    uploadImages.ImageLocalPath = "/WebP/" + imageWebP;
+                    uploadImages.OriginalWidth = dataImage.OriginalWidth;
+                    uploadImages.OriginalHeight = dataImage.OriginalHeight;
+                    uploadImages.OriginalAspectRatio = dataImage.OriginalAspectRatio;
+                    uploadImages.TargetWidth = dataImage.TargetWidth;
+                    uploadImages.TargetHeight = dataImage.TargetHeight;
+                    uploadImages.TargetAspectRatio = dataImage.TargetAspectRatio;
+                }
+            }
+            catch (Exception ex) {
+                uploadImages.IsError = true;
+                uploadImages.ErrorMessage = ex.Message;
+                uploadImages.ImageLocalPath = "/webP/00-not-found-800x600.webp";
             }
 
             imageList.Add(uploadImages);

@@ -9,7 +9,7 @@ namespace ClassLibrary.Utils.Utils
         private const int _targetWidth = 800;
         private const int _targetHeight = 600;
 
-        public byte[] ConvertToWebP_FromPath(string inputPath, int quality = _quality)
+        public byte[] ConvertToBytes_FromPath(string inputPath, int quality = _quality)
         {
             using var imageStream = File.OpenRead(inputPath);                       // Crear un flujo de memoria a partir de la ruta
             using var skBitmap = SKBitmap.Decode(imageStream);                      // Decodificar la imagen desde el flujo
@@ -19,7 +19,7 @@ namespace ClassLibrary.Utils.Utils
             return skData.ToArray();                                                // Retornar los bytes del formato WebP
         }
 
-        public byte[] ConvertToWebP_FromStream(Stream imageStream, int quality = _quality)
+        public byte[] ConvertToBytes_FromStream(Stream imageStream, string outputPath, int quality)
         {
             using var skBitmap = SKBitmap.Decode(imageStream);                      // Decodificar la imagen desde el flujo
             using var skImage = SKImage.FromBitmap(skBitmap);                       // Crear SKImage desde SKBitmap
@@ -28,7 +28,46 @@ namespace ClassLibrary.Utils.Utils
             return skData.ToArray();                                                // Retornar los bytes del formato WebP
         }
 
-        public DataImage ConvertToWebP_FromStream_AndSave(Stream imageStream, string outputPath, int quality = _quality, int targetWidth = _targetWidth, int targetHeight = _targetHeight)
+        public void SaveImage(byte[] imageBytes, string outputPath)
+        {
+            if (imageBytes == null || imageBytes.Length == 0)
+            {
+                throw new ArgumentException("imageBytes cannot be null or empty.", nameof(imageBytes));
+            }
+
+            File.WriteAllBytes(outputPath, imageBytes);
+        }
+
+        public DataImage ConvertToWebP_FromStream_AndSave(Stream imageStream, string outputPath, int quality)
+        {
+            using var skBitmap = SKBitmap.Decode(imageStream);                      // Decodificar la imagen desde el flujo
+
+            if (quality <= 0 || quality > 100)
+                quality = _quality;
+
+            var dataImage = new DataImage()
+            {
+                OriginalWidth = skBitmap.Width,
+                OriginalHeight = skBitmap.Height,
+                OriginalRatio = (float) skBitmap.Width / skBitmap.Height,
+                OriginalAspectRatio = SimplifyRatio(skBitmap.Width, skBitmap.Height),
+                TargetWidth = skBitmap.Width,
+                TargetHeight = skBitmap.Height,
+                TargetRatio = (float) skBitmap.Width / skBitmap.Height,
+                TargetAspectRatio = SimplifyRatio(skBitmap.Width, skBitmap.Height),
+            };
+
+            using var skImage = SKImage.FromBitmap(skBitmap);                       // Crear SKImage desde SKBitmap
+            using var skData = skImage.Encode(SKEncodedImageFormat.Webp, quality);  // Codificar a WebP
+
+            var webpBytes = skData.ToArray();                                       // Convierte a Arreglo de Bytes
+
+            SaveImage(webpBytes, outputPath);                                       // Retornar los bytes del formato WebP
+
+            return dataImage;
+        }
+
+        public DataImage ConvertToWebP_FromStream_ResizeAndSave(Stream imageStream, string outputPath, int quality, int targetWidth, int targetHeight)
         {
             using var skBitmap = SKBitmap.Decode(imageStream);                      // Decodificar la imagen desde el flujo
 
@@ -53,7 +92,7 @@ namespace ClassLibrary.Utils.Utils
                 TargetAspectRatio = SimplifyRatio(targetWidth, targetHeight),
             };
 
-            using var resizedBitmap = CropImage(skBitmap, dataImage);
+            using var resizedBitmap = CropImage(skBitmap, dataImage);               // Recorta la imagen
 
             using var skImage = SKImage.FromBitmap(resizedBitmap);                  // Crear SKImage desde SKBitmap
             using var skData = skImage.Encode(SKEncodedImageFormat.Webp, quality);  // Codificar a WebP
@@ -63,84 +102,6 @@ namespace ClassLibrary.Utils.Utils
             SaveImage(webpBytes, outputPath);                                       // Retornar los bytes del formato WebP
 
             return dataImage;
-        }
-
-        public byte[] ConvertToWebP_Resize_FromBytes(byte[] imageBytes, int quality = _quality, int targetWidth = _targetWidth, int targetHeight = _targetHeight)
-        {
-            using var imageStream = new MemoryStream(imageBytes);                               // Crear un flujo de memoria a partir del arreglo de bytes
-            using var skBitmap = SKBitmap.Decode(imageStream);                                  // Decodificar la imagen desde el flujo
-            using var resizedBitmap = ResizeAndCropImage(skBitmap, targetWidth, targetHeight);  // Redimensiona el liezo y la imagen
-            using var skImage = SKImage.FromBitmap(resizedBitmap);                              // Crear SKImage desde SKBitmap
-            using var skData = skImage.Encode(SKEncodedImageFormat.Webp, quality);              // Codificar a WebP
-
-            return skData.ToArray();                                                            // Retornar los bytes del formato WebP
-        }
-
-        public void SaveImage(byte[] imageBytes, string outputPath)
-        {
-            if (imageBytes == null || imageBytes.Length == 0)
-            {
-                throw new ArgumentException("imageBytes cannot be null or empty.", nameof(imageBytes));
-            }
-
-            File.WriteAllBytes(outputPath, imageBytes);
-        }
-
-        // Redimensiona y recorta la imagen manteniendo la relación de aspecto
-        private SKBitmap ResizeAndCropImage(SKBitmap bitmap, int targetWidth = 0, int targetHeight = 0)
-        {
-            if (targetWidth <= 0 || targetHeight <= 0)
-            {
-                return bitmap;
-            }
-
-            float originalAspectRatio = (float) bitmap.Width / bitmap.Height;
-            float targetAspectRatio = (float) targetWidth / targetHeight;
-            int cropX, cropY, cropWidth, cropHeight;
-
-            if (originalAspectRatio > targetAspectRatio)
-            {
-                cropWidth = (int) (bitmap.Height * targetAspectRatio);
-                cropHeight = bitmap.Height;
-                cropX = (bitmap.Width - cropWidth) / 2;
-                cropY = 0;
-            }
-            else if (originalAspectRatio < targetAspectRatio)
-            {
-                cropWidth = bitmap.Width;
-                cropHeight = (int) (bitmap.Width / targetAspectRatio);
-                cropX = 0;
-                cropY = (bitmap.Height - cropHeight) / 2;
-            }
-            else
-            {
-                cropWidth = targetWidth;
-                cropHeight = targetHeight;
-                cropX = 0;
-                cropY = 0;
-            }
-
-            using var croppedBitmap = new SKBitmap(cropWidth, cropHeight);
-
-            using (var canvas = new SKCanvas(croppedBitmap))
-            {
-                var srcRect = new SKRect(cropX, cropY, cropX + cropWidth, cropY + cropHeight);
-                var destRect = new SKRect(0, 0, cropWidth, cropHeight);
-                canvas.DrawBitmap(bitmap, srcRect, destRect);
-            }
-
-            // Redimensionar el croppedBitmap a las dimensiones objetivo
-            var resizedBitmap = new SKBitmap(targetWidth, targetHeight);
-
-            using (var canvas = new SKCanvas(resizedBitmap))
-            {
-                canvas.DrawBitmap(
-                    croppedBitmap, 
-                    SKRect.Create(croppedBitmap.Width, croppedBitmap.Height),
-                    SKRect.Create(targetWidth, targetHeight));
-            }
-
-            return resizedBitmap;
         }
 
         // Redimensiona y recorta la imagen manteniendo la relación de aspecto
@@ -189,11 +150,6 @@ namespace ClassLibrary.Utils.Utils
             }
 
             return resizedBitmap;
-        }
-
-        private void ResizeImage()
-        {
-
         }
 
         // Método para simplificar el ratio como cadena
