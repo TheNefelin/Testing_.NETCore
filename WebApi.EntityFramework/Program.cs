@@ -54,7 +54,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint("/openapi/v1.json", "Swagger Api v1");
+    options.SwaggerEndpoint("/openapi/v1.json", "Projects Api v1");
     options.RoutePrefix = string.Empty;
 });
 
