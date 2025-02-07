@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SkiaSharp;
 using System.Diagnostics;
 using WebAppMVC_webpConverter.Models;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WebAppMVC_webpConverter.Controllers
 {
