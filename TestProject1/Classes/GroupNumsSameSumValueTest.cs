@@ -4,7 +4,6 @@ namespace TestProject1.Classes;
 
 public class GroupNumsSameSumValueTest
 {
-
     [Fact]
     public void GroupNumsTest1()
     {
